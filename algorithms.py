@@ -10,10 +10,16 @@ class PuzzleNode:
         self.parent = parent
 
     def _if_solved(self, grid):
-        if self.board == grid:
-            return True
-        return False
-    
+        return self.board == grid
+
+    def __hash__(self) -> int:
+        return hash(bytes([x for row in self.board for x in row]))
+
+    def __eq__(self, __o: object) -> bool:
+        if not isinstance(__o, self.__class__):
+            return NotImplemented
+        return self.board == __o.board
+
     def _move(direction: str) -> None:
         pass
 
