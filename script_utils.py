@@ -1,9 +1,11 @@
 from constants import *
 
+from typing import Union
 from argparse import ArgumentParser
-from algorithms import PuzzleNode
-from exceptions import WrongGridSizeException, MissingGridSizeException, \
-    WrongRowInputException, CannotMapToIntegerException
+from algorithms import PuzzleNode, check_if_valid_numbers
+from exceptions import CustomException, WrongGridSizeException, \
+    MissingGridSizeException, WrongRowInputException, CannotMapToIntegerException, \
+    NumbersOutOfRangeException
 
 def parse_arguments() -> object:
     """
@@ -26,8 +28,10 @@ def parse_arguments() -> object:
 
     return parser.parse_args()
 
-def load_from_file(filename: str) -> PuzzleNode:
+def load_from_file(filename: str) -> Union[PuzzleNode, CustomException]:
     """
+    Loads dimensions and board from file
+    Adjusted for boards with square shape (3x3, 4x4 etc.)
     """
     grid = []
     with open(filename, 'r') as input_file:
@@ -54,8 +58,10 @@ def load_from_file(filename: str) -> PuzzleNode:
                 raise WrongRowInputException(msg)
             grid.append(line)
 
-    #check if valid numbers
+    if not check_if_valid_numbers(board=grid, dimension=grid_size[0]):
+        msg = f'Range: <0, {grid_size[0] **2 - 1}>'
+        raise NumbersOutOfRangeException(msg)
     
-    parent_puzzle = PuzzleNode(board=grid, parent='Root', grid_dimension=grid_size[0])
+    parent_puzzle = PuzzleNode(board=grid, parent='Root')
 
-    return parent_puzzle
+    return parent_puzzle, grid_size[0]

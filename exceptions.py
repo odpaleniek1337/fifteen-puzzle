@@ -45,3 +45,11 @@ class NoEmptySpaceFoundException(CustomException):
 
     def __str__(self) -> str:
         return super().__str__()
+
+class NumbersOutOfRangeException(CustomException):
+    def __init__(self, message='') -> None:
+        self.message = "Numbers out of range. "
+        self.base_message = self.message if not message else self.message + str(message)
+
+    def __str__(self) -> str:
+        return super().__str__()

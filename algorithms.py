@@ -5,17 +5,19 @@ class PuzzleNode:
     """
     Base class for saving board state
     """
-    def __init__(self, board: List[List], parent: Union[str, 'PuzzleNode'], grid_dimension: int) -> None:
+    def __init__(self, board: List[List], parent: Union[str, 'PuzzleNode']) -> None:
         self.board = board
         self.parent = parent
-        self.grid_dimension = grid_dimension
 
     def _if_solved(self, grid):
         if self.board == grid:
             return True
         return False
+    
+    def _move(direction: str) -> None:
+        pass
 
-def check_if_solvable(start_node: PuzzleNode) -> int:
+def check_if_solvable(start_node: PuzzleNode, dimension: int) -> int:
     """
     Checks if read board is solvable
 
@@ -31,7 +33,7 @@ def check_if_solvable(start_node: PuzzleNode) -> int:
             - inversions odd -> not solvable
     """
     inversions = get_inversion_count(board=start_node.board)
-    if start_node.grid_dimension % 2:
+    if dimension % 2:
         return 0 if inversions % 2 else 1
 
     position = find_0(board=start_node.board)
@@ -60,6 +62,21 @@ def get_inversion_count(board: List[List]) -> int:
             if (num2 and num1 and num1 > num2):
                 inversion_count += 1
     return inversion_count
+
+def prepare_solved_board(dimension: int) -> List[List]:
+    """
+    Prepares solved board to store it globally
+    """
+    solved = [[dimension * j + x + 1 for x in range(dimension)] for j in range(dimension)]
+    solved[dimension - 1][dimension - 1] = 0
+    return solved
+
+def check_if_valid_numbers(board: List[List], dimension) -> bool:
+    for row in board:
+        for col in row:
+            if col < 0 or col > (dimension ** 2) - 1:
+                return False
+    return True
 
 def bfs():
     pass
