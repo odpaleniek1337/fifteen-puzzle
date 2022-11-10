@@ -2,10 +2,10 @@ from constants import *
 
 from typing import Union
 from argparse import ArgumentParser
-from algorithms import PuzzleNode, check_if_valid_numbers
+from algorithms import PuzzleNode, check_if_valid_numbers, check_if_numbers_dont_repeat
 from exceptions import CustomException, WrongGridSizeException, \
     MissingGridSizeException, WrongRowInputException, CannotMapToIntegerException, \
-    NumbersOutOfRangeException
+    NumbersOutOfRangeException, NumberRepetitionException
 
 def parse_arguments() -> object:
     """
@@ -61,7 +61,9 @@ def load_from_file(filename: str) -> Union[PuzzleNode, CustomException]:
     if not check_if_valid_numbers(board=grid, dimension=grid_size[0]):
         msg = f'Range: <0, {grid_size[0] **2 - 1}>'
         raise NumbersOutOfRangeException(msg)
-    
+    if not check_if_numbers_dont_repeat(board=grid):
+        raise NumberRepetitionException
+        
     parent_puzzle = PuzzleNode(board=grid, parent='Root')
 
     return parent_puzzle, grid_size[0]

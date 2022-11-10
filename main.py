@@ -10,7 +10,7 @@ def main():
     SOLVED_BOARD = prepare_solved_board(grid_dimension)
     #check if possible to solve
     if not check_if_solvable(start_node=start_node, dimension=grid_dimension):
-        exit('Game not solvable') #FIX
+        exit('Game not solvable') #FIX #output -1 \n 
     print('Game solvable')
     
     #choose proper algorithm

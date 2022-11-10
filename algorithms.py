@@ -84,6 +84,12 @@ def check_if_valid_numbers(board: List[List], dimension) -> bool:
                 return False
     return True
 
+def check_if_numbers_dont_repeat(board: List[List]) -> bool:
+    transformed_board = [x for row in board for x in row]
+    if not len(transformed_board) == len(set(transformed_board)):
+        return False
+    return True
+
 def bfs():
     pass
 

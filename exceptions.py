@@ -53,3 +53,11 @@ class NumbersOutOfRangeException(CustomException):
 
     def __str__(self) -> str:
         return super().__str__()
+
+class NumberRepetitionException(CustomException):
+    def __init__(self, message='') -> None:
+        self.message = "At least one of the numbers appeared more than once. "
+        self.base_message = self.message if not message else self.message + str(message)
+
+    def __str__(self) -> str:
+        return super().__str__()
