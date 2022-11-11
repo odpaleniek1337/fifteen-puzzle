@@ -5,7 +5,6 @@ class CustomException(Exception):
     def __str__(self) -> str:
         return self.base_message
     
-
 class WrongGridSizeException(CustomException):
     def __init__(self, message='') -> None:
         self.message = 'Row and column count must be the same. '
