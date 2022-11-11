@@ -59,11 +59,11 @@ def load_from_file(filename: str) -> Union[PuzzleNode, CustomException]:
             grid.append(line)
 
     if not check_if_valid_numbers(board=grid, dimension=grid_size[0]):
-        msg = f'Range: <0, {grid_size[0] **2 - 1}>'
+        msg = f'Range: <0, {grid_size[0] ** 2 - 1}>'
         raise NumbersOutOfRangeException(msg)
     if not check_if_numbers_dont_repeat(board=grid):
         raise NumberRepetitionException
-        
-    parent_puzzle = PuzzleNode(board=grid, parent='Root')
+    
+    root_puzzle = PuzzleNode(board=grid, dimension=grid_size[0])
 
-    return parent_puzzle, grid_size[0]
+    return root_puzzle, grid_size[0]
