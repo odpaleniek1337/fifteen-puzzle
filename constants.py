@@ -38,7 +38,7 @@ HEURISTICS_IDS = [
     '1', '2', '3'
 ]
 
-MOVE_RIGHT = (0, 1)
-MOVE_DOWN = (1, 0)
-MOVE_LEFT = (0, -1)
-MOVE_UP = (-1, 0)
+MOVE_RIGHT = (0, -1)
+MOVE_DOWN = (-1, 0)
+MOVE_LEFT = (0, 1)
+MOVE_UP = (1, 0)

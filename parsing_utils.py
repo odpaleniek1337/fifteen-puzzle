@@ -64,6 +64,6 @@ def load_from_file(filename: str) -> Union[PuzzleNode, CustomException]:
     if not check_if_numbers_dont_repeat(board=grid):
         raise NumberRepetitionException
     
-    root_puzzle = PuzzleNode(board=grid, dimension=grid_size[0])
+    root_puzzle = PuzzleNode(board=grid, dimension=grid_size[0], steps='')
 
     return root_puzzle, grid_size[0]

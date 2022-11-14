@@ -15,24 +15,30 @@ def main():
         exit('Game not solvable') #FIX #output -1 \n 
     print('Game solvable')
     
-    algorithm = None
-    factory = AlgorithmFactory()
     #choose proper algorithm
+    algorithm, technique = None, None
+    factory = AlgorithmFactory()
     if args.bfs:
         algorithm = factory.get_algoritm('bfs')
+        technique = args.bfs
     elif args.dfs:
         algorithm = factory.get_algoritm('dfs')
+        technique = args.dfs
     elif args.idfs:
         algorithm = factory.get_algoritm('idfs')
+        technique = args.idfs
     elif args.bf:
         algorithm = factory.get_algoritm('bf')
+        technique = args.bf
     elif args.astar:
         algorithm = factory.get_algoritm('astar')
+        technique = args.astar
     elif args.smastar:
         algorithm = factory.get_algoritm('smastar')
-    
-    print(algorithm.solve(start_node, SOLVED_BOARD))
+        technique = args.smastar
     #solve game
+    print(algorithm.solve(start_node, SOLVED_BOARD, list(technique)))
+
     #save steps in viewable format e.g .15sav
     #output needed data
     pass

@@ -6,10 +6,11 @@ class PuzzleNode:
     """
     Base class for saving board state
     """
-    def __init__(self, board: List[List], dimension: int, depth: int = 0) -> None:
+    def __init__(self, board: List[List], dimension: int, steps: str, depth: int = 0) -> None:
         self.board = board
         self.dimension = dimension
         self.depth = depth
+        self.steps = '' + steps
 
     def __hash__(self) -> int:
         return hash(bytes(two_d_to_one_d(self.board)))
@@ -43,7 +44,7 @@ class PuzzleNode:
         return True
 
     def _swap_0(self, position_0: tuple, move: tuple) -> List[List]:
-        board_copy = self.board.copy()
+        board_copy = [[y for y in x] for x in self.board]
         board_copy[position_0[0]][position_0[1]], board_copy[position_0[0] + move[0]][position_0[1] + move[1]] = \
             board_copy[position_0[0] + move[0]][position_0[1] + move[1]], board_copy[position_0[0]][position_0[1]]
         return board_copy
@@ -51,19 +52,19 @@ class PuzzleNode:
     def _right(self, position_0: tuple, move: tuple) -> 'PuzzleNode':
         #if depth >= 20 none/sth else
         swapped_board = self._swap_0(position_0, move)
-        return PuzzleNode(swapped_board, self.dimension, self.depth + 1)
+        return PuzzleNode(swapped_board, self.dimension, self.steps + 'R', self.depth + 1)
     
     def _down(self, position_0: tuple, move: tuple) -> 'PuzzleNode':
         swapped_board = self._swap_0(position_0, move)
-        return PuzzleNode(swapped_board, self.dimension, self.depth + 1)
+        return PuzzleNode(swapped_board, self.dimension, self.steps + 'D', self.depth + 1)
 
     def _left(self, position_0: tuple, move: tuple) -> 'PuzzleNode':
         swapped_board = self._swap_0(position_0, move)
-        return PuzzleNode(swapped_board, self.dimension, self.depth + 1)
+        return PuzzleNode(swapped_board, self.dimension, self.steps + 'L', self.depth + 1)
 
     def _up(self, position_0: tuple, move: tuple) -> 'PuzzleNode':
         swapped_board = self._swap_0(position_0, move)
-        return PuzzleNode(swapped_board, self.dimension, self.depth + 1)
+        return PuzzleNode(swapped_board, self.dimension, self.steps + 'U', self.depth + 1)
 
     def _move(self, direction: str) -> Union['PuzzleNode', None]:
         position = self._find_0_coords()
@@ -129,7 +130,7 @@ def prepare_solved_board(dimension: int) -> PuzzleNode:
     """
     solved = [[dimension * j + x + 1 for x in range(dimension)] for j in range(dimension)]
     solved[dimension - 1][dimension - 1] = 0
-    return PuzzleNode(solved, 4, 0)
+    return PuzzleNode(solved, 4, '', 0)
 
 def check_if_valid_numbers(board: List[List], dimension) -> bool:
     for row in board:
