@@ -50,7 +50,6 @@ class PuzzleNode:
         return board_copy
 
     def _right(self, position_0: tuple, move: tuple) -> 'PuzzleNode':
-        #if depth >= 20 none/sth else
         swapped_board = self._swap_0(position_0, move)
         return PuzzleNode(swapped_board, self.dimension, self.steps + 'R', self.depth + 1)
     
