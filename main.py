@@ -1,6 +1,7 @@
 from parsing_utils import parse_arguments, load_from_file
 from algo_utils import check_if_solvable, prepare_solved_board
 from factory import AlgorithmFactory
+from solution_viewer import show_result
 
 def main():
     #read passed arguments
@@ -12,8 +13,7 @@ def main():
 
     #check if possible to solve
     if not check_if_solvable(start_node=start_node, dimension=grid_dimension):
-        exit('Game not solvable') #FIX #output -1 \n 
-    print('Game solvable')
+        print(f'-1\n')
     
     #choose proper algorithm
     algorithm, technique = None, None
@@ -36,12 +36,14 @@ def main():
     elif args.smastar:
         algorithm = factory.get_algoritm('smastar')
         technique = args.smastar
+    else:
+        exit(f'You did not provide any algorithm')
     #solve game
-    print(algorithm.solve(start_node, SOLVED_BOARD, list(technique)))
+    n, result = algorithm.solve(start_node, SOLVED_BOARD, list(technique))
+    print(f'{n}\n{result}')
 
-    #save steps in viewable format e.g .15sav
-    #output needed data
-    pass
+    if args.display: 
+        show_result(start_node, result)
 
 if __name__ == '__main__':
     main()

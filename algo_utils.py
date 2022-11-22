@@ -24,7 +24,8 @@ class PuzzleNode:
         str_board = ''
         for x in range(self.dimension):
             str_board += str(self.board[x]) + '\n'
-        return f'Depth: {self.depth}\n' + str_board
+        #return f'Depth: {self.depth}\n' + str_board
+        return f'{str_board}'
 
     def _find_0_coords(self) -> Tuple[int, int]:
         """

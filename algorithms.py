@@ -19,7 +19,7 @@ class BreadthFirstSearchAlgorithm(BaseAlgorithm):
     def __init__(self) -> None:
         super().__init__()
 
-    def solve(self, start_node: PuzzleNode, solved_board: PuzzleNode, order: List[str]) -> Tuple[int, int, int]:
+    def solve(self, start_node: PuzzleNode, solved_board: PuzzleNode, order: List[str]) -> Tuple[int, str]:
         if start_node == solved_board:
             return 0, start_node.steps
         
@@ -30,14 +30,14 @@ class BreadthFirstSearchAlgorithm(BaseAlgorithm):
         while self.neighbours:
             current_node = self.neighbours.popleft()
             if current_node.depth >= self.max_depth:
-                return -1, len(self.seen_nodes), len(self.neighbours) + 1 #2,3 args to be deleted
+                return -1, ''
             self.seen_nodes.add(hash(start_node))
             if shuffle_flag:
                 shuffle(order)
             for direction in order:
                 new_node = current_node._move(direction=direction)
                 if new_node and new_node == solved_board:
-                    return len(new_node.steps), new_node.steps, len(self.seen_nodes)
+                    return len(new_node.steps), new_node.steps
                 if new_node and hash(new_node) not in self.seen_nodes:
                     self.neighbours.append(new_node)
                     self.seen_nodes.add(hash(new_node))
@@ -57,7 +57,7 @@ class DepthFirstSearchAlgorithm(BaseAlgorithm):
     def __init__(self) -> None:
         super().__init__()
 
-    def solve(self, start_node: PuzzleNode, solved_board: PuzzleNode, order: List[str]) -> Tuple[int, int, int]:
+    def solve(self, start_node: PuzzleNode, solved_board: PuzzleNode, order: List[str]) -> Tuple[int, str]:
         if start_node == solved_board:
             return 0, start_node.steps
         
@@ -74,13 +74,13 @@ class DepthFirstSearchAlgorithm(BaseAlgorithm):
                 for direction in order:
                     new_node = current_node._move(direction=direction)
                     if new_node and new_node == solved_board:
-                        return len(new_node.steps), new_node.steps, len(self.seen_nodes)
+                        return len(new_node.steps), new_node.steps
                     if new_node and hash(new_node) not in self.seen_nodes:
                         self.neighbours.append(new_node)
                         self.seen_nodes.add(hash(new_node))
 
         if not self.neighbours:
-            return -1, len(self.seen_nodes), len(self.neighbours) + 1 #2,3 args to be deleted
+            return -1, ''
 
 class IterativeDeepeningDepthFirstSearchAlgorithm(BaseAlgorithm):
     def __init__(self) -> None:
@@ -106,7 +106,7 @@ class IterativeDeepeningDepthFirstSearchAlgorithm(BaseAlgorithm):
                     for direction in order:
                         new_node = current_node._move(direction=direction)
                         if new_node and new_node == solved_board:
-                            return len(new_node.steps), new_node.steps, len(self.seen_nodes)
+                            return len(new_node.steps), new_node.steps
                         if new_node and hash(new_node) not in self.seen_nodes:
                             self.seen_nodes.add(hash(new_node))
                             if current_node.depth == self.current_depth - 1:
@@ -118,7 +118,7 @@ class IterativeDeepeningDepthFirstSearchAlgorithm(BaseAlgorithm):
                 self.current_depth += 1
                 self.neighbours, lowest_depth_neighbours = lowest_depth_neighbours, deque()
             else:
-                return -1, len(self.seen_nodes), len(self.neighbours) + 1 #2,3 args to be deleted
+                return -1, ''
 
 class BestFirstSearchAlgorithm(BaseAlgorithm):
     def __init__(self) -> None:

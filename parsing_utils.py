@@ -21,8 +21,8 @@ def parse_arguments() -> object:
     algorithms_choice.add_argument('-f', '--bf', choices=HEURISTICS_IDS, help='Best-first strategy')
     algorithms_choice.add_argument('-a', '--astar', choices=HEURISTICS_IDS, help='A* strategy')
     algorithms_choice.add_argument('-s', '--smastar', choices=HEURISTICS_IDS, help='SMA* strategy')
-    algorithms_choice.add_argument('-e', '--display', help='Used to display previous games', action='store_true')
 
+    parser.add_argument('-e', '--display', help='Used to display previous games', action='store_true')
     parser.add_argument('-n', '--input_file', default='input.15sav')
     parser.add_argument('-o', '--output_file', default='output.15sav')
 
