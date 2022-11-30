@@ -1,6 +1,6 @@
 from typing import List, Tuple
 from abc import ABC, abstractmethod
-from algo_utils import PuzzleNode, evaluate_node_astar
+from algo_utils import PuzzleNode, evaluate_node_astar, evaluate_node_bf_strategy
 from random import shuffle
 from collections import deque
 from constants import BASIC_ORDER
@@ -123,9 +123,22 @@ class BestFirstSearchAlgorithm(BaseAlgorithm):
 
     def solve(self, start_node: PuzzleNode, solved_board: PuzzleNode, heuristics: str) -> List[str]:
         if start_node == solved_board:
-            return []
-        return NotImplemented
-        #return self.steps
+            return 0, start_node.steps
+        self.neighbours.append(start_node)
+        
+        while self.neighbours:
+            current_node = self.neighbours.popleft()
+            self.seen_nodes.add(hash(current_node))
+            for direction in BASIC_ORDER:
+                new_node = current_node._move(direction=direction)
+                if new_node and new_node == solved_board:
+                    return len(new_node.steps), new_node.steps
+                if new_node and hash(new_node) not in self.seen_nodes:
+                    new_node.heuristic_value = evaluate_node_bf_strategy(new_node, heuristics, solved_board)
+                    self.neighbours.append(new_node)
+                    self.seen_nodes.add(hash(new_node))
+            self.neighbours = deque(sorted(self.neighbours))
+        return -1, '\n'
 
 class AStarAlgorithm(BaseAlgorithm):
     def __init__(self) -> None:

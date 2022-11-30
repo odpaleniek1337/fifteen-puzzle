@@ -169,7 +169,13 @@ def calculate_hamming_distance(board: List[List]) -> int:
 def evaluate_node_astar(node: PuzzleNode, heuristics: str, solved_board: PuzzleNode) -> int:
     if heuristics == 'manh':
         return node.depth + calculate_manhattan_distance(node.board, solved_board.board)
-        #return calculate_manhattan_distance(node.board, solved_board.board) - finds quickest by evaluation, not the shortest path
     elif heuristics == 'mdlc':
         return node.depth + calculate_hamming_distance(node.board)
+    return NotImplemented
+
+def evaluate_node_bf_strategy(node: PuzzleNode, heuristics: str, solved_board: PuzzleNode) -> int:
+    if heuristics == 'manh':
+        return calculate_manhattan_distance(node.board, solved_board.board)
+    elif heuristics == 'mdlc':
+        return calculate_hamming_distance(node.board)
     return NotImplemented
