@@ -159,9 +159,10 @@ def calculate_manhattan_distance(board: List[List], solved_board: List[List]) ->
         distance += abs(unsolved_coords[1] - solved_coords[1])
     return distance
 
-def evaluate_node(node: PuzzleNode, heuristics: str, solved_board: PuzzleNode) -> int:
+def evaluate_node_astar(node: PuzzleNode, heuristics: str, solved_board: PuzzleNode) -> int:
     if heuristics == 'manh':
-        return calculate_manhattan_distance(node.board, solved_board.board)
+        return node.depth + calculate_manhattan_distance(node.board, solved_board.board)
+        #return calculate_manhattan_distance(node.board, solved_board.board) - finds quickest by evaluation, not the shortest path
     elif heuristics == 'mdlc':
         return NotImplemented
     return NotImplemented

@@ -1,6 +1,6 @@
 from typing import List, Tuple
 from abc import ABC, abstractmethod
-from algo_utils import PuzzleNode, evaluate_node
+from algo_utils import PuzzleNode, evaluate_node_astar
 from random import shuffle
 from collections import deque
 from constants import BASIC_ORDER
@@ -144,7 +144,7 @@ class AStarAlgorithm(BaseAlgorithm):
                 if new_node and new_node == solved_board:
                     return len(new_node.steps), new_node.steps
                 if new_node and hash(new_node) not in self.seen_nodes:
-                    new_node.heuristic_value = evaluate_node(new_node, heuristics, solved_board)
+                    new_node.heuristic_value = evaluate_node_astar(new_node, heuristics, solved_board)
                     self.neighbours.append(new_node)
                     self.seen_nodes.add(hash(new_node))
             self.neighbours = deque(sorted(self.neighbours))
