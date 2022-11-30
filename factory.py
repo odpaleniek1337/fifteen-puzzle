@@ -1,6 +1,6 @@
 from algorithms import BaseAlgorithm, BreadthFirstSearchAlgorithm, \
     DepthFirstSearchAlgorithm, IterativeDeepeningDepthFirstSearchAlgorithm, \
-    BestFirstSearchAlgorithm, AStarAlgorithm, SMAStarAlgorithm
+    BestFirstSearchAlgorithm, AStarAlgorithm
 
 from typing import Tuple, Union
 
@@ -16,8 +16,6 @@ class AlgorithmFactory():
             return BestFirstSearchAlgorithm() 
         elif algorithm == 'astar':
             return AStarAlgorithm()
-        elif algorithm == 'smastar':
-            return SMAStarAlgorithm()
 
 def provide_algorithm_prerequisites(factory: AlgorithmFactory, args: object) -> Union[Tuple[BaseAlgorithm, str, int], None]:
     if args.bfs:
@@ -30,6 +28,4 @@ def provide_algorithm_prerequisites(factory: AlgorithmFactory, args: object) -> 
         return factory.get_algoritm('bf'), 'manh' if int(args.bf) == 1 else ('mdlc' if int(args.bf) == 2 else 'manh'), 1
     elif args.astar:
         return factory.get_algoritm('astar'), 'manh' if int(args.astar) == 1 else ('mdlc' if int(args.astar) == 2 else 'manh'), 1
-    elif args.smastar:
-        return factory.get_algoritm('smastar'), 'manh' if int(args.smastar) == 1 else ('mdlc' if int(args.smastar) == 2 else 'manh'), 1
     return None, None, None

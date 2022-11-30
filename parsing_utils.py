@@ -18,9 +18,8 @@ def parse_arguments() -> object:
     algorithms_choice.add_argument('-b', '--bfs', choices=ORDER_SEARCH_POSSIBILITIES, help='Breadth-first search')
     algorithms_choice.add_argument('-d', '--dfs', choices=ORDER_SEARCH_POSSIBILITIES, help='Depth-first search')
     algorithms_choice.add_argument('-i', '--idfs', choices=ORDER_SEARCH_POSSIBILITIES, help='Iterative deepenening DFS')
-    algorithms_choice.add_argument('-f', '--bf', choices=HEURISTICS_IDS, help='Best-first strategy')
+    algorithms_choice.add_argument('-f', '--bf', choices=HEURISTICS_IDS, help='Best-first strategy with 1 - Manhattan Distance; 2 - Hamming Distance')
     algorithms_choice.add_argument('-a', '--astar', choices=HEURISTICS_IDS, help='A* strategy with 1 - Manhattan Distance; 2 - Hamming Distance')
-    algorithms_choice.add_argument('-s', '--smastar', choices=HEURISTICS_IDS, help='SMA* strategy')
 
     parser.add_argument('-e', '--display', help='Used to display previous games', action='store_true')
     parser.add_argument('-n', '--input_file', default='input.15sav')

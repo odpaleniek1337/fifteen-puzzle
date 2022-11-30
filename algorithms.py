@@ -162,13 +162,3 @@ class AStarAlgorithm(BaseAlgorithm):
                     self.seen_nodes.add(hash(new_node))
             self.neighbours = deque(sorted(self.neighbours))
         return -1, '\n'
-
-class SMAStarAlgorithm(BaseAlgorithm):
-    def __init__(self) -> None:
-        super().__init__()
-
-    def solve(self, start_node: PuzzleNode, solved_board: PuzzleNode, heuristics: str) -> List[str]:
-        if start_node == solved_board:
-            return []
-        return NotImplemented
-        #return self.steps

@@ -28,7 +28,6 @@ class PuzzleNode:
         str_board = ''
         for x in range(self.dimension):
             str_board += str(self.board[x]) + '\n'
-        #return f'Depth: {self.depth}\n' + str_board
         return f'{str_board}'
 
     def _check_if_move_possible(self, position: tuple, move: tuple) -> bool:
