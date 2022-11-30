@@ -6,11 +6,12 @@ class PuzzleNode:
     """
     Base class for saving board state
     """
-    def __init__(self, board: List[List], dimension: int, steps: str, depth: int = 0) -> None:
+    def __init__(self, board: List[List], dimension: int, steps: str, depth: int = 0, heuristic_value: int = 0) -> None:
         self.board = board
         self.dimension = dimension
         self.depth = depth
         self.steps = '' + steps
+        self.heuristic_value = heuristic_value
 
     def __hash__(self) -> int:
         return hash(bytes(two_d_to_one_d(self.board)))
@@ -19,6 +20,9 @@ class PuzzleNode:
         if not isinstance(__o, self.__class__):
             return NotImplemented
         return self.board == __o.board
+
+    def __lt__(self, __o: 'PuzzleNode') -> bool:
+        return self.heuristic_value < __o.heuristic_value
     
     def __str__(self) -> str:
         str_board = ''

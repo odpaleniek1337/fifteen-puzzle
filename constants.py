@@ -4,7 +4,8 @@ __all__ = [
     'MOVE_RIGHT',
     'MOVE_DOWN',
     'MOVE_LEFT',
-    'MOVE_UP'
+    'MOVE_UP',
+    'BASIC_ORDER'
 ]
 
 ORDER_SEARCH_POSSIBILITIES = [
@@ -42,3 +43,5 @@ MOVE_RIGHT = (0, -1)
 MOVE_DOWN = (-1, 0)
 MOVE_LEFT = (0, 1)
 MOVE_UP = (1, 0)
+
+BASIC_ORDER = 'URDL'

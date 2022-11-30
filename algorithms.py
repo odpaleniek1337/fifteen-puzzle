@@ -3,6 +3,7 @@ from abc import ABC, abstractmethod
 from algo_utils import PuzzleNode, evaluate_node
 from random import shuffle
 from collections import deque
+from constants import BASIC_ORDER
 
 class BaseAlgorithm(ABC):
     @abstractmethod
@@ -23,7 +24,6 @@ class BreadthFirstSearchAlgorithm(BaseAlgorithm):
         if start_node == solved_board:
             return 0, start_node.steps
         
-        self.seen_nodes.add(hash(start_node))
         self.neighbours.append(start_node)
         shuffle_flag = order[0] == 'R'
 
@@ -31,7 +31,7 @@ class BreadthFirstSearchAlgorithm(BaseAlgorithm):
             current_node = self.neighbours.popleft()
             if current_node.depth >= self.max_depth:
                 return -1, '\n'
-            self.seen_nodes.add(hash(start_node))
+            self.seen_nodes.add(hash(current_node))
             if shuffle_flag:
                 shuffle(order)
             for direction in order:
@@ -61,13 +61,12 @@ class DepthFirstSearchAlgorithm(BaseAlgorithm):
         if start_node == solved_board:
             return 0, start_node.steps
         
-        self.seen_nodes.add(hash(start_node))
         self.neighbours.append(start_node)
         shuffle_flag = order[0] == 'R'
 
         while self.neighbours:
             current_node = self.neighbours.pop()
-            self.seen_nodes.add(hash(start_node))
+            self.seen_nodes.add(hash(current_node))
             if shuffle_flag:
                 shuffle(order)
             if current_node.depth < self.max_depth:
@@ -91,15 +90,13 @@ class IterativeDeepeningDepthFirstSearchAlgorithm(BaseAlgorithm):
         if start_node == solved_board:
             return 0, start_node.steps
         
-        self.seen_nodes.add(hash(start_node))
         self.neighbours.append(start_node)
         shuffle_flag = order[0] == 'R'
         while True:
             lowest_depth_neighbours = deque()
-
             while self.neighbours:
                 current_node = self.neighbours.pop()
-                self.seen_nodes.add(hash(start_node))
+                self.seen_nodes.add(hash(current_node))
                 if shuffle_flag:
                     shuffle(order)
                 if current_node.depth < self.current_depth:
@@ -137,9 +134,21 @@ class AStarAlgorithm(BaseAlgorithm):
     def solve(self, start_node: PuzzleNode, solved_board: PuzzleNode, heuristics: str) -> List[str]:
         if start_node == solved_board:
             return 0, start_node.steps
-        evaluate_node(start_node, heuristics, solved_board)
+        self.neighbours.append(start_node)
+        
+        while self.neighbours:
+            current_node = self.neighbours.popleft()
+            self.seen_nodes.add(hash(current_node))
+            for direction in BASIC_ORDER:
+                new_node = current_node._move(direction=direction)
+                if new_node and new_node == solved_board:
+                    return len(new_node.steps), new_node.steps
+                if new_node and hash(new_node) not in self.seen_nodes:
+                    new_node.heuristic_value = evaluate_node(new_node, heuristics, solved_board)
+                    self.neighbours.append(new_node)
+                    self.seen_nodes.add(hash(new_node))
+            self.neighbours = deque(sorted(self.neighbours))
         return -1, '\n'
-        #return self.steps
 
 class SMAStarAlgorithm(BaseAlgorithm):
     def __init__(self) -> None:

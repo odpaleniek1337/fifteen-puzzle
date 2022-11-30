@@ -14,6 +14,7 @@ def main():
     #check if possible to solve
     if not check_if_solvable(start_node=start_node, dimension=grid_dimension):
         print(f'-1\n')
+        exit()
     
     #choose proper algorithm
     algorithm, technique = None, None
@@ -31,6 +32,6 @@ def main():
 
     if args.display: 
         show_result(start_node, result)
-
+    
 if __name__ == '__main__':
     main()
