@@ -150,15 +150,14 @@ def calculate_manhattan_distance(board: List[List], solved_board: List[List]) ->
     distance = 0
     numbers_in_1d = two_d_to_one_d(board)
     for number in numbers_in_1d:
-        print(number, board, find_coords_of_tile(board, number))
-    #for i, number in enumerate(numbers_in_1d, 1):
-    #    print(i, number)
+        unsolved_coords, solved_coords = find_coords_of_tile(board, number), find_coords_of_tile(solved_board, number)
+        distance += abs(unsolved_coords[0] - solved_coords[0])
+        distance += abs(unsolved_coords[1] - solved_coords[1])
     return distance
 
 def evaluate_node(node: PuzzleNode, heuristics: str, solved_board: PuzzleNode) -> int:
     if heuristics == 'manh':
-        calculate_manhattan_distance(node.board, solved_board.board)
-        return NotImplemented
+        return calculate_manhattan_distance(node.board, solved_board.board)
     elif heuristics == 'mdlc':
         return NotImplemented
-    return NotImplemented#g + h
+    return NotImplemented

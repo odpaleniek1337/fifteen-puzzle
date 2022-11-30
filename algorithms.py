@@ -30,7 +30,7 @@ class BreadthFirstSearchAlgorithm(BaseAlgorithm):
         while self.neighbours:
             current_node = self.neighbours.popleft()
             if current_node.depth >= self.max_depth:
-                return -1, ''
+                return -1, '\n'
             self.seen_nodes.add(hash(start_node))
             if shuffle_flag:
                 shuffle(order)
@@ -80,7 +80,7 @@ class DepthFirstSearchAlgorithm(BaseAlgorithm):
                         self.seen_nodes.add(hash(new_node))
 
         if not self.neighbours:
-            return -1, ''
+            return -1, '\n'
 
 class IterativeDeepeningDepthFirstSearchAlgorithm(BaseAlgorithm):
     def __init__(self) -> None:
@@ -118,7 +118,7 @@ class IterativeDeepeningDepthFirstSearchAlgorithm(BaseAlgorithm):
                 self.current_depth += 1
                 self.neighbours, lowest_depth_neighbours = lowest_depth_neighbours, deque()
             else:
-                return -1, ''
+                return -1, '\n'
 
 class BestFirstSearchAlgorithm(BaseAlgorithm):
     def __init__(self) -> None:
@@ -138,7 +138,7 @@ class AStarAlgorithm(BaseAlgorithm):
         if start_node == solved_board:
             return 0, start_node.steps
         evaluate_node(start_node, heuristics, solved_board)
-        return NotImplemented
+        return -1, '\n'
         #return self.steps
 
 class SMAStarAlgorithm(BaseAlgorithm):
