@@ -147,3 +147,8 @@ def check_if_numbers_dont_repeat(board: List[List]) -> bool:
 
 def two_d_to_one_d(board: List[List]) -> List:
     return [x for row in board for x in row]
+
+def evaluate_node(node: PuzzleNode) -> int:
+    g, h = 0, 0
+
+    return g + h

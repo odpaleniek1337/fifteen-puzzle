@@ -136,7 +136,7 @@ class AStarAlgorithm(BaseAlgorithm):
 
     def solve(self, start_node: PuzzleNode, solved_board: PuzzleNode, choice: int) -> List[str]:
         if start_node == solved_board:
-            return []
+            return 0, start_node.steps
         return NotImplemented
         #return self.steps
 
