@@ -131,3 +131,4 @@ dmypy.json
 # special project files
 *.15sav
 *.vscode
+*.zip
