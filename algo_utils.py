@@ -148,7 +148,13 @@ def check_if_numbers_dont_repeat(board: List[List]) -> bool:
 def two_d_to_one_d(board: List[List]) -> List:
     return [x for row in board for x in row]
 
-def evaluate_node(node: PuzzleNode) -> int:
-    g, h = 0, 0
+def calculate_manhattan_distance(board: List[List], solved_board: List[List]) -> int:
+    distance = 0
+    return distance
 
-    return g + h
+def evaluate_node(node: PuzzleNode, heuristics: str, solved_board: PuzzleNode) -> int:
+    if heuristics == 'manh':
+        return NotImplemented
+    elif heuristics == 'mdlc':
+        return NotImplemented
+    return NotImplemented#g + h

@@ -1,6 +1,6 @@
 from parsing_utils import parse_arguments, load_from_file
 from algo_utils import check_if_solvable, prepare_solved_board
-from factory import AlgorithmFactory
+from factory import AlgorithmFactory, provide_algorithm_prerequisites
 from solution_viewer import show_result
 
 def main():
@@ -18,28 +18,15 @@ def main():
     #choose proper algorithm
     algorithm, technique = None, None
     factory = AlgorithmFactory()
-    if args.bfs:
-        algorithm = factory.get_algoritm('bfs')
-        technique = args.bfs
-    elif args.dfs:
-        algorithm = factory.get_algoritm('dfs')
-        technique = args.dfs
-    elif args.idfs:
-        algorithm = factory.get_algoritm('idfs')
-        technique = args.idfs
-    elif args.bf:
-        algorithm = factory.get_algoritm('bf')
-        technique = args.bf
-    elif args.astar:
-        algorithm = factory.get_algoritm('astar')
-        technique = args.astar
-    elif args.smastar:
-        algorithm = factory.get_algoritm('smastar')
-        technique = args.smastar
-    else:
+    algorithm, technique, algo_type = provide_algorithm_prerequisites(factory, args)
+    if not algorithm:
         exit(f'You did not provide any algorithm')
+
     #solve game
-    n, result = algorithm.solve(start_node, SOLVED_BOARD, list(technique))
+    if not algo_type:
+        n, result = algorithm.solve(start_node, SOLVED_BOARD, list(technique))
+    else:
+        n, result = algorithm.solve(start_node, SOLVED_BOARD, technique)
     print(f'{n}\n{result}')
 
     if args.display: 
