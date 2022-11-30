@@ -35,7 +35,7 @@ ORDER_SEARCH_POSSIBILITIES = [
 ]
 
 HEURISTICS_IDS = [
-    '1', '2', '3'
+    '1', '2'
 ]
 
 MOVE_RIGHT = (0, -1)

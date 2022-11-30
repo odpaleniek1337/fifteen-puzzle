@@ -27,9 +27,9 @@ def provide_algorithm_prerequisites(factory: AlgorithmFactory, args: object) -> 
     elif args.idfs:
         return factory.get_algoritm('idfs'), args.idfs, 0
     elif args.bf:
-        return factory.get_algoritm('bf'), args.bf, 1
+        return factory.get_algoritm('bf'), 'manh' if int(args.bf) == 1 else 'mdlc', 1
     elif args.astar:
-        return factory.get_algoritm('astar'), args.astar, 1
+        return factory.get_algoritm('astar'), 'manh' if int(args.astar) == 1 else 'mdlc', 1
     elif args.smastar:
-        return factory.get_algoritm('smastar'), args.smastar, 1
+        return factory.get_algoritm('smastar'), 'manh' if int(args.smastar) == 1 else 'mdlc', 1
     return None, None, None

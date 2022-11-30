@@ -1,6 +1,6 @@
 from typing import List, Tuple
 from abc import ABC, abstractmethod
-from algo_utils import PuzzleNode
+from algo_utils import PuzzleNode, evaluate_node
 from random import shuffle
 from collections import deque
 
@@ -87,7 +87,7 @@ class IterativeDeepeningDepthFirstSearchAlgorithm(BaseAlgorithm):
         super().__init__()
         self.current_depth = 5
 
-    def solve(self, start_node: PuzzleNode, solved_board: PuzzleNode, order: List[str]) -> Tuple[int, int, int]:
+    def solve(self, start_node: PuzzleNode, solved_board: PuzzleNode, order: List[str]) -> Tuple[int, str]:
         if start_node == solved_board:
             return 0, start_node.steps
         
@@ -124,7 +124,7 @@ class BestFirstSearchAlgorithm(BaseAlgorithm):
     def __init__(self) -> None:
         super().__init__()
 
-    def solve(self, start_node: PuzzleNode, solved_board: PuzzleNode, choice: int) -> List[str]:
+    def solve(self, start_node: PuzzleNode, solved_board: PuzzleNode, heuristics: str) -> List[str]:
         if start_node == solved_board:
             return []
         return NotImplemented
@@ -134,9 +134,10 @@ class AStarAlgorithm(BaseAlgorithm):
     def __init__(self) -> None:
         super().__init__()
 
-    def solve(self, start_node: PuzzleNode, solved_board: PuzzleNode, choice: int) -> List[str]:
+    def solve(self, start_node: PuzzleNode, solved_board: PuzzleNode, heuristics: str) -> List[str]:
         if start_node == solved_board:
             return 0, start_node.steps
+        evaluate_node(start_node, heuristics, solved_board)
         return NotImplemented
         #return self.steps
 
@@ -144,7 +145,7 @@ class SMAStarAlgorithm(BaseAlgorithm):
     def __init__(self) -> None:
         super().__init__()
 
-    def solve(self, start_node: PuzzleNode, solved_board: PuzzleNode, choice: int) -> List[str]:
+    def solve(self, start_node: PuzzleNode, solved_board: PuzzleNode, heuristics: str) -> List[str]:
         if start_node == solved_board:
             return []
         return NotImplemented

@@ -27,16 +27,6 @@ class PuzzleNode:
         #return f'Depth: {self.depth}\n' + str_board
         return f'{str_board}'
 
-    def _find_0_coords(self) -> Tuple[int, int]:
-        """
-        Returns coordinates of 0 in 0-indexed tuple (row, column)
-        """
-        for i, row in enumerate(self.board):
-            if 0 in row:
-                for j, num in enumerate(row):
-                    if not num:
-                        return (i, j)
-
     def _check_if_move_possible(self, position: tuple, move: tuple) -> bool:
         if position[0] + move[0] < 0 or position[0] + move[0] >= self.dimension:
             return False
@@ -67,7 +57,7 @@ class PuzzleNode:
         return PuzzleNode(swapped_board, self.dimension, self.steps + 'U', self.depth + 1)
 
     def _move(self, direction: str) -> Union['PuzzleNode', None]:
-        position = self._find_0_coords()
+        position = find_coords_of_tile(self.board, 0)
         if direction == 'R' and self._check_if_move_possible(position, MOVE_RIGHT):
             return self._right(position, MOVE_RIGHT)
         elif direction == 'D' and self._check_if_move_possible(position, MOVE_DOWN):
@@ -77,6 +67,14 @@ class PuzzleNode:
         elif direction == 'U' and self._check_if_move_possible(position, MOVE_UP):
             return self._up(position, MOVE_UP)
         return None
+
+def find_coords_of_tile(board: List[List], tile: int) -> Tuple[int, int]:
+        """
+        Returns coordinates of number in 0-indexed tuple (row, column)
+        """
+        for i, row in enumerate(board):
+            if tile in row:
+                return (i, row.index(tile))
 
 def check_if_solvable(start_node: PuzzleNode, dimension: int) -> int:
     """
@@ -150,10 +148,16 @@ def two_d_to_one_d(board: List[List]) -> List:
 
 def calculate_manhattan_distance(board: List[List], solved_board: List[List]) -> int:
     distance = 0
+    numbers_in_1d = two_d_to_one_d(board)
+    for number in numbers_in_1d:
+        print(number, board, find_coords_of_tile(board, number))
+    #for i, number in enumerate(numbers_in_1d, 1):
+    #    print(i, number)
     return distance
 
 def evaluate_node(node: PuzzleNode, heuristics: str, solved_board: PuzzleNode) -> int:
     if heuristics == 'manh':
+        calculate_manhattan_distance(node.board, solved_board.board)
         return NotImplemented
     elif heuristics == 'mdlc':
         return NotImplemented
