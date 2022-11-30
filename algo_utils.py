@@ -159,10 +159,17 @@ def calculate_manhattan_distance(board: List[List], solved_board: List[List]) ->
         distance += abs(unsolved_coords[1] - solved_coords[1])
     return distance
 
+def calculate_hamming_distance(board: List[List]) -> int:
+    distance = 0
+    numbers_in_1d = two_d_to_one_d(board)
+    for i, number in enumerate(numbers_in_1d, 1):
+        distance += 1 if number != i or i == 16 and not number else 0
+    return distance
+
 def evaluate_node_astar(node: PuzzleNode, heuristics: str, solved_board: PuzzleNode) -> int:
     if heuristics == 'manh':
         return node.depth + calculate_manhattan_distance(node.board, solved_board.board)
         #return calculate_manhattan_distance(node.board, solved_board.board) - finds quickest by evaluation, not the shortest path
     elif heuristics == 'mdlc':
-        return NotImplemented
+        return node.depth + calculate_hamming_distance(node.board)
     return NotImplemented
