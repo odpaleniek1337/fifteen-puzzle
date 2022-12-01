@@ -43,17 +43,6 @@ class BreadthFirstSearchAlgorithm(BaseAlgorithm):
                     self.seen_nodes.add(hash(new_node))
 
 class DepthFirstSearchAlgorithm(BaseAlgorithm): 
-    ''' on max_depth 20
-    python .\main.py --idfs URLD -n input11.15sav
-    Game solvable
-    (19, 'LLDDRRURDLULLDRUUUL', 2111007)
-    python .\main.py --dfs URLD -n input11.15sav 
-    Game solvable
-    (-1, 199456, 1)
-    python .\main.py --bfs URLD -n input11.15sav 
-    Game solvable
-    (19, 'LLDDRRURDLULLDRUUUL', 2174599)
-    '''
     def __init__(self) -> None:
         super().__init__()
 
