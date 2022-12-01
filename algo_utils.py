@@ -1,6 +1,7 @@
-from typing import List, Union, Tuple
-from exceptions import NoEmptySpaceFoundException
+from dataclasses import dataclass, field
 from constants import MOVE_RIGHT, MOVE_DOWN, MOVE_LEFT, MOVE_UP
+from exceptions import NoEmptySpaceFoundException
+from typing import List, Union, Tuple, Any
 
 class PuzzleNode:
     """
@@ -178,3 +179,8 @@ def evaluate_node_bf_strategy(node: PuzzleNode, heuristics: str, solved_board: P
     elif heuristics == 'mdlc':
         return calculate_hamming_distance(node.board)
     return NotImplemented
+
+@dataclass(order=True)
+class PrioritizedPuzzleNode:
+    priority: int
+    item: PuzzleNode = field(compare=False)
