@@ -31,7 +31,7 @@ class BreadthFirstSearchAlgorithm(BaseAlgorithm):
         while self.neighbours:
             current_node = self.neighbours.popleft()
             if current_node.depth >= self.max_depth:
-                return -1, '\n'
+                return -1, ''
             if shuffle_flag:
                 shuffle(order)
             for direction in order:
@@ -62,12 +62,12 @@ class DepthFirstSearchAlgorithm(BaseAlgorithm):
                 shuffle(order)
             for direction in order:
                 new_node = current_node._move(direction=direction)
-                if new_node and new_node not in self.seen_nodes and new_node.depth <= self.max_depth:
+                if new_node and hash(new_node) not in self.seen_nodes and new_node.depth <= self.max_depth:
                     self.neighbours.append(new_node)
                     self.seen_nodes.add(hash(new_node))
 
         if not self.neighbours:
-            return -1, '\n'
+            return -1, ''
 
 class IterativeDeepeningDepthFirstSearchAlgorithm(BaseAlgorithm):
     def __init__(self) -> None:
@@ -103,7 +103,7 @@ class IterativeDeepeningDepthFirstSearchAlgorithm(BaseAlgorithm):
                 self.current_depth += 1
                 self.neighbours, lowest_depth_neighbours = lowest_depth_neighbours, deque()
             else:
-                return -1, '\n'
+                return -1, ''
 
 class BestFirstSearchAlgorithm(BaseAlgorithm):
     def __init__(self) -> None:
@@ -125,7 +125,7 @@ class BestFirstSearchAlgorithm(BaseAlgorithm):
                 if new_node and hash(new_node) not in self.seen_nodes:
                     self.neighbours.put_nowait(PrioritizedPuzzleNode(evaluate_node_bf_strategy(new_node, heuristics, solved_board), new_node))
                     self.seen_nodes.add(hash(new_node))
-        return -1, '\n'
+        return -1, ''
 
 class AStarAlgorithm(BaseAlgorithm):
     def __init__(self) -> None:
@@ -147,4 +147,4 @@ class AStarAlgorithm(BaseAlgorithm):
                 if new_node and hash(new_node) not in self.seen_nodes:
                     self.neighbours.put_nowait(PrioritizedPuzzleNode(evaluate_node_astar(new_node, heuristics, solved_board), new_node))
                     self.seen_nodes.add(hash(new_node))
-        return -1, '\n'
+        return -1, ''

@@ -133,3 +133,6 @@ dmypy.json
 *.vscode
 *.zip
 *.txt
+*.csv
+*.xlsx
+*.obj
