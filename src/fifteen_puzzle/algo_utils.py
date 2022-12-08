@@ -114,7 +114,7 @@ class PuzzleNode:
         swapped_board = self._swap_0(position_0, MOVE_UP)
         return PuzzleNode(swapped_board, self.dimension, self.steps + 'U', self.depth + 1)
 
-    def _move(self, direction: str) -> Union['PuzzleNode', None]:
+    def move(self, direction: str) -> Union['PuzzleNode', None]:
         """Creates new state after move given direction (R,D,L,U)
 
         Returns:
@@ -180,7 +180,7 @@ def check_if_solvable(start_node: PuzzleNode, dimension: int) -> int:
 
 
 def find_0_row(board: List[List]) -> int:
-    """Finds first row in which 0 was found in given board
+    """Finds first row in which 0 was found in reversed given board
 
     Args:
         board (List[List]): given board
@@ -240,8 +240,8 @@ def check_if_valid_numbers(board: List[List], dimension: int) -> bool:
         bool: indicator if board is valid
     """
     for row in board:
-        for col in row:
-            if col < 0 or col > (dimension ** 2) - 1:
+        for value in row:
+            if value < 0 or value > (dimension ** 2) - 1:
                 return False
     return True
 
@@ -274,7 +274,7 @@ def two_d_to_one_d(board: List[List]) -> List:
 
 
 def calculate_manhattan_distance(board: List[List], solved_board: List[List]) -> int:
-    """Calculates manhattan distance between boards
+    """Calculates manhattan distance between boards in 2d
 
     Args:
         board (List[List]): given board
@@ -309,38 +309,38 @@ def calculate_hamming_distance(board: List[List]) -> int:
     return distance
 
 
-def evaluate_node_astar(node: PuzzleNode, heuristics: str, solved_board: PuzzleNode) -> int:
+def evaluate_node_astar(node: PuzzleNode, heuristics: str, solved_state: PuzzleNode) -> int:
     """Evaluates node based on depth and chosen heuristic
 
     Args:
         node (PuzzleNode): given state
-        heuristics (str): heuristic type (manh, mdlc)
+        heuristics (str): heuristic type (manh, hamm)
         solved_board (PuzzleNode): target state
 
     Returns:
         int: astar evaluation
     """
     if heuristics == 'manh':
-        return node.depth + calculate_manhattan_distance(node.board, solved_board.board)
-    elif heuristics == 'mdlc':
+        return node.depth + calculate_manhattan_distance(node.board, solved_state.board)
+    elif heuristics == 'hamm':
         return node.depth + calculate_hamming_distance(node.board)
     return NotImplemented
 
 
-def evaluate_node_bf_strategy(node: PuzzleNode, heuristics: str, solved_board: PuzzleNode) -> int:
+def evaluate_node_bf_strategy(node: PuzzleNode, heuristics: str, solved_state: PuzzleNode) -> int:
     """Evaluates node based on chosen heuristic
 
     Args:
         node (PuzzleNode): given state
-        heuristics (str): heuristic type (manh, mdlc)
+        heuristics (str): heuristic type (manh, hamm)
         solved_board (PuzzleNode): target state
 
     Returns:
         int: greedy-best-first-strategy evaluation
     """
     if heuristics == 'manh':
-        return calculate_manhattan_distance(node.board, solved_board.board)
-    elif heuristics == 'mdlc':
+        return calculate_manhattan_distance(node.board, solved_state.board)
+    elif heuristics == 'hamm':
         return calculate_hamming_distance(node.board)
     return NotImplemented
 

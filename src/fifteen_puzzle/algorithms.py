@@ -53,7 +53,7 @@ class BreadthFirstSearchAlgorithm(BaseAlgorithm):
             if shuffle_flag:
                 shuffle(order)
             for direction in order:
-                new_node = current_node._move(direction=direction)
+                new_node = current_node.move(direction=direction)
                 if new_node and new_node == solved_board:
                     return len(new_node.steps), new_node.steps
                 if new_node and hash(new_node) not in self.seen_nodes:
@@ -84,7 +84,7 @@ class DepthFirstSearchAlgorithm(BaseAlgorithm):
             if shuffle_flag:
                 shuffle(order)
             for direction in order:
-                new_node = current_node._move(direction=direction)
+                new_node = current_node.move(direction=direction)
                 if new_node and hash(new_node) not in self.seen_nodes and new_node.depth <= self.max_depth:
                     self.neighbours.append(new_node)
                     self.seen_nodes.add(hash(new_node))
@@ -118,7 +118,7 @@ class IterativeDeepeningDepthFirstSearchAlgorithm(BaseAlgorithm):
                     shuffle(order)
                 if current_node.depth < self.current_depth:
                     for direction in order:
-                        new_node = current_node._move(direction=direction)
+                        new_node = current_node.move(direction=direction)
                         if new_node and new_node == solved_board:
                             return len(new_node.steps), new_node.steps
                         if new_node and hash(new_node) not in self.seen_nodes:
@@ -154,7 +154,7 @@ class BestFirstSearchAlgorithm(BaseAlgorithm):
         while self.neighbours:
             current_node = self.neighbours.get_nowait().item
             for direction in BASIC_ORDER:
-                new_node = current_node._move(direction=direction)
+                new_node = current_node.move(direction=direction)
                 if new_node and new_node == solved_board:
                     return len(new_node.steps), new_node.steps
                 if new_node and hash(new_node) not in self.seen_nodes:
@@ -186,7 +186,7 @@ class AStarAlgorithm(BaseAlgorithm):
         while self.neighbours:
             current_node = self.neighbours.get_nowait().item
             for direction in BASIC_ORDER:
-                new_node = current_node._move(direction=direction)
+                new_node = current_node.move(direction=direction)
                 if new_node and new_node == solved_board:
                     return len(new_node.steps), new_node.steps
                 if new_node and hash(new_node) not in self.seen_nodes:

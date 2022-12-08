@@ -48,9 +48,9 @@ def provide_algorithm_prerequisites(factory: AlgorithmFactory,
     elif args.idfs:
         return factory.get_algoritm('idfs'), args.idfs, 0
     elif args.bf:
-        heuristics = 'manh' if int(args.bf) == 1 else ('mdlc' if int(args.bf) == 2 else 'manh')
+        heuristics = 'manh' if int(args.bf) == 1 else ('hamm' if int(args.bf) == 2 else 'manh')
         return factory.get_algoritm('bf'), heuristics, 1
     elif args.astar:
-        heuristics = 'manh' if int(args.astar) == 1 else ('mdlc' if int(args.astar) == 2 else 'manh')
+        heuristics = 'manh' if int(args.astar) == 1 else ('hamm' if int(args.astar) == 2 else 'manh')
         return factory.get_algoritm('astar'), heuristics, 1
     return None, None, None
