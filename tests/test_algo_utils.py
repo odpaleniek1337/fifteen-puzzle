@@ -1,6 +1,6 @@
 from fifteen_puzzle.algo_utils import PuzzleNode
 from fifteen_puzzle.algo_utils import find_coords_of_tile, \
-    check_if_solvable, find_0_row, prepare_solved_board, \
+    check_if_solvable, find_0_row, prepare_solved_node, \
     check_if_valid_numbers, check_if_numbers_dont_repeat, \
     calculate_manhattan_distance, calculate_hamming_distance, \
     evaluate_node_bf_strategy, evaluate_node_astar
@@ -44,8 +44,8 @@ def test_find_0_row_raises():
         find_0_row(board)
 
 
-def test_prepare_4x4_solved_board(target_4x4_state):
-    assert target_4x4_state == prepare_solved_board(4)
+def test_prepare_4x4_solved_node(target_4x4_state):
+    assert target_4x4_state == prepare_solved_node(4)
 
 
 def test_numbers_out_of_range():

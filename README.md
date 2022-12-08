@@ -1,9 +1,12 @@
 # fifteen-puzzle
-Repository containing development of fifteen-puzzle solving techniques
+Repository contains implementation of exemplary fifteen-puzzle solving techniques
 
 ![Tests](https://github.com/odpaleniek1337/radio-generator/actions/workflows/tests.yml/badge.svg)
 
-## Requirements
-Developed using Python 3.8.10
+## Implemented algorithms
 
 
+## Additional information
+All algorithms were optimized by adding hashes of previously visited nodes, so if a new node would be exactly the same it won't be added as a state to check
+
+Developed using `Python 3.8.10` and tested with the use of `pytest`  and checked linting with the use of `flake8`

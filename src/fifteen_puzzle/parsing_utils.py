@@ -1,3 +1,5 @@
+import pickle
+
 from fifteen_puzzle.constants import *  # noqa: F403
 
 from argparse import ArgumentParser
@@ -89,3 +91,27 @@ def load_from_file(filename: str) -> Union[PuzzleNode, CustomException]:
     root_puzzle = PuzzleNode(board=grid, dimension=grid_size[0], steps='')
 
     return root_puzzle, grid_size[0]
+
+
+def serialize_objects(filename: str, objects: object) -> None:
+    """Pickle serialization function
+
+    Args:
+        filename (str): filename
+        objects (object): objects desired for serialization
+    """
+    with open(filename, 'wb') as output_file:
+        pickle.dump(objects, output_file)
+
+def deserialize_objects(filename: str) -> object:
+    """Pickle deserialization function
+
+    Args:
+        filename (str): filename
+
+    Returns:
+        object: Deserialized object(s)
+    """
+    with open(filename, 'rb') as input_file:
+        inputs = pickle.load(input_file)
+    return inputs

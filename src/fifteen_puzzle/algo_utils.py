@@ -215,7 +215,7 @@ def get_inversion_count(board: List[List]) -> int:
     return inversion_count
 
 
-def prepare_solved_board(dimension: int) -> PuzzleNode:
+def prepare_solved_node(dimension: int) -> PuzzleNode:
     """Prepares solved state to store it globally
 
     Args:
@@ -315,7 +315,7 @@ def evaluate_node_astar(node: PuzzleNode, heuristics: str, solved_state: PuzzleN
     Args:
         node (PuzzleNode): given state
         heuristics (str): heuristic type (manh, hamm)
-        solved_board (PuzzleNode): target state
+        solved_state (PuzzleNode): target state
 
     Returns:
         int: astar evaluation
@@ -333,7 +333,7 @@ def evaluate_node_bf_strategy(node: PuzzleNode, heuristics: str, solved_state: P
     Args:
         node (PuzzleNode): given state
         heuristics (str): heuristic type (manh, hamm)
-        solved_board (PuzzleNode): target state
+        solved_state (PuzzleNode): target state
 
     Returns:
         int: greedy-best-first-strategy evaluation

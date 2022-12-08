@@ -39,8 +39,8 @@ class BreadthFirstSearchAlgorithm(BaseAlgorithm):
     def __init__(self) -> None:
         super().__init__()
 
-    def solve(self, start_node: PuzzleNode, solved_board: PuzzleNode, order: List[str]) -> Tuple[int, str]:
-        if start_node == solved_board:
+    def solve(self, start_node: PuzzleNode, solved_node: PuzzleNode, order: List[str]) -> Tuple[int, str]:
+        if start_node == solved_node:
             return 0, start_node.steps
 
         self.neighbours.append(start_node)
@@ -54,7 +54,7 @@ class BreadthFirstSearchAlgorithm(BaseAlgorithm):
                 shuffle(order)
             for direction in order:
                 new_node = current_node.move(direction=direction)
-                if new_node and new_node == solved_board:
+                if new_node and new_node == solved_node:
                     return len(new_node.steps), new_node.steps
                 if new_node and hash(new_node) not in self.seen_nodes:
                     self.neighbours.append(new_node)
@@ -70,8 +70,8 @@ class DepthFirstSearchAlgorithm(BaseAlgorithm):
     def __init__(self) -> None:
         super().__init__()
 
-    def solve(self, start_node: PuzzleNode, solved_board: PuzzleNode, order: List[str]) -> Tuple[int, str]:
-        if start_node == solved_board:
+    def solve(self, start_node: PuzzleNode, solved_node: PuzzleNode, order: List[str]) -> Tuple[int, str]:
+        if start_node == solved_node:
             return 0, start_node.steps
 
         self.neighbours.append(start_node)
@@ -79,7 +79,7 @@ class DepthFirstSearchAlgorithm(BaseAlgorithm):
         shuffle_flag = order[0] == 'R'
         while self.neighbours:
             current_node = self.neighbours.pop()
-            if current_node == solved_board:
+            if current_node == solved_node:
                 return len(current_node.steps), current_node.steps
             if shuffle_flag:
                 shuffle(order)
@@ -103,8 +103,8 @@ class IterativeDeepeningDepthFirstSearchAlgorithm(BaseAlgorithm):
         super().__init__()
         self.current_depth = 5
 
-    def solve(self, start_node: PuzzleNode, solved_board: PuzzleNode, order: List[str]) -> Tuple[int, str]:
-        if start_node == solved_board:
+    def solve(self, start_node: PuzzleNode, solved_node: PuzzleNode, order: List[str]) -> Tuple[int, str]:
+        if start_node == solved_node:
             return 0, start_node.steps
 
         self.neighbours.append(start_node)
@@ -119,7 +119,7 @@ class IterativeDeepeningDepthFirstSearchAlgorithm(BaseAlgorithm):
                 if current_node.depth < self.current_depth:
                     for direction in order:
                         new_node = current_node.move(direction=direction)
-                        if new_node and new_node == solved_board:
+                        if new_node and new_node == solved_node:
                             return len(new_node.steps), new_node.steps
                         if new_node and hash(new_node) not in self.seen_nodes:
                             self.seen_nodes.add(hash(new_node))
@@ -145,8 +145,8 @@ class BestFirstSearchAlgorithm(BaseAlgorithm):
         super().__init__()
         self.neighbours = PriorityQueue()
 
-    def solve(self, start_node: PuzzleNode, solved_board: PuzzleNode, heuristics: str) -> List[str]:
-        if start_node == solved_board:
+    def solve(self, start_node: PuzzleNode, solved_node: PuzzleNode, heuristics: str) -> List[str]:
+        if start_node == solved_node:
             return 0, start_node.steps
         self.neighbours.put_nowait(PrioritizedPuzzleNode(0, start_node))
         self.seen_nodes.add(hash(start_node))
@@ -155,12 +155,12 @@ class BestFirstSearchAlgorithm(BaseAlgorithm):
             current_node = self.neighbours.get_nowait().item
             for direction in BASIC_ORDER:
                 new_node = current_node.move(direction=direction)
-                if new_node and new_node == solved_board:
+                if new_node and new_node == solved_node:
                     return len(new_node.steps), new_node.steps
                 if new_node and hash(new_node) not in self.seen_nodes:
                     self.neighbours.put_nowait(
                         PrioritizedPuzzleNode(
-                            evaluate_node_bf_strategy(new_node, heuristics, solved_board),
+                            evaluate_node_bf_strategy(new_node, heuristics, solved_node),
                             new_node)
                     )
                     self.seen_nodes.add(hash(new_node))
@@ -177,8 +177,8 @@ class AStarAlgorithm(BaseAlgorithm):
         super().__init__()
         self.neighbours = PriorityQueue()
 
-    def solve(self, start_node: PuzzleNode, solved_board: PuzzleNode, heuristics: str) -> List[str]:
-        if start_node == solved_board:
+    def solve(self, start_node: PuzzleNode, solved_node: PuzzleNode, heuristics: str) -> List[str]:
+        if start_node == solved_node:
             return 0, start_node.steps
         self.neighbours.put_nowait(PrioritizedPuzzleNode(0, start_node))
         self.seen_nodes.add(hash(start_node))
@@ -187,12 +187,12 @@ class AStarAlgorithm(BaseAlgorithm):
             current_node = self.neighbours.get_nowait().item
             for direction in BASIC_ORDER:
                 new_node = current_node.move(direction=direction)
-                if new_node and new_node == solved_board:
+                if new_node and new_node == solved_node:
                     return len(new_node.steps), new_node.steps
                 if new_node and hash(new_node) not in self.seen_nodes:
                     self.neighbours.put_nowait(
                         PrioritizedPuzzleNode(
-                            evaluate_node_astar(new_node, heuristics, solved_board),
+                            evaluate_node_astar(new_node, heuristics, solved_node),
                             new_node)
                     )
                     self.seen_nodes.add(hash(new_node))
