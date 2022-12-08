@@ -1,12 +1,14 @@
 from dataclasses import dataclass, field
-from constants import MOVE_RIGHT, MOVE_DOWN, MOVE_LEFT, MOVE_UP
-from exceptions import NoEmptySpaceFoundException
-from typing import List, Union, Tuple, Any
+from typing import List, Union, Tuple
+from fifteen_puzzle.constants import MOVE_RIGHT, MOVE_DOWN, MOVE_LEFT, MOVE_UP
+from fifteen_puzzle.exceptions import NoEmptySpaceFoundException
+
 
 class PuzzleNode:
     """Base class representing state for saving and manipulating game
     """
-    def __init__(self, board: List[List], dimension: int, steps: str, depth: int = 0, heuristic_value: int = 0) -> None:
+    def __init__(self, board: List[List], dimension: int, steps: str,
+                 depth: int = 0, heuristic_value: int = 0) -> None:
         self.board = board
         self.dimension = dimension
         self.depth = depth
@@ -23,7 +25,7 @@ class PuzzleNode:
 
     def __lt__(self, __o: 'PuzzleNode') -> bool:
         return self.heuristic_value < __o.heuristic_value
-    
+
     def __str__(self) -> str:
         str_board = ''
         for x in range(self.dimension):
@@ -57,8 +59,11 @@ class PuzzleNode:
             List[List]: newly created 2d board
         """
         board_copy = [[y for y in x] for x in self.board]
-        board_copy[position_0[0]][position_0[1]], board_copy[position_0[0] + move[0]][position_0[1] + move[1]] = \
-            board_copy[position_0[0] + move[0]][position_0[1] + move[1]], board_copy[position_0[0]][position_0[1]]
+
+        board_copy[position_0[0]][position_0[1]], \
+            board_copy[position_0[0] + move[0]][position_0[1] + move[1]] = \
+            board_copy[position_0[0] + move[0]][position_0[1] + move[1]], \
+            board_copy[position_0[0]][position_0[1]]
         return board_copy
 
     def _right(self, position_0: tuple) -> 'PuzzleNode':
@@ -72,7 +77,7 @@ class PuzzleNode:
         """
         swapped_board = self._swap_0(position_0, MOVE_RIGHT)
         return PuzzleNode(swapped_board, self.dimension, self.steps + 'R', self.depth + 1)
-    
+
     def _down(self, position_0: tuple) -> 'PuzzleNode':
         """Creates new state after move down
 
@@ -126,6 +131,7 @@ class PuzzleNode:
             return self._up(position)
         return None
 
+
 def find_coords_of_tile(board: List[List], tile: int) -> Tuple[int, int]:
     """Returns coordinates of number in 0-indexed tuple (row, column)
 
@@ -140,6 +146,7 @@ def find_coords_of_tile(board: List[List], tile: int) -> Tuple[int, int]:
         if tile in row:
             return (i, row.index(tile))
 
+
 def check_if_solvable(start_node: PuzzleNode, dimension: int) -> int:
     """Checks if read state is solvable
 
@@ -147,15 +154,15 @@ def check_if_solvable(start_node: PuzzleNode, dimension: int) -> int:
         - inversions even -> solvable
         - inversions odd -> not solvable
     - dimension even
-        - 0 position from lower boundary even 
+        - 0 position from lower boundary even
             - inversions odd -> solvable
             - inversions even -> not solvable
-        - 0 position from lower boundary odd 
+        - 0 position from lower boundary odd
             - inversions even -> solvable
             - inversions odd -> not solvable
 
     Args:
-        start_node (PuzzleNode): given 
+        start_node (PuzzleNode): given state
         dimension (int): dimension index (must be a square e.g 3x3)
 
     Returns:
@@ -171,6 +178,7 @@ def check_if_solvable(start_node: PuzzleNode, dimension: int) -> int:
 
     return inversions % 2
 
+
 def find_0_row(board: List[List]) -> int:
     """Finds first row in which 0 was found in given board
 
@@ -181,12 +189,13 @@ def find_0_row(board: List[List]) -> int:
         NoEmptySpaceFoundException: No zero in the puzzle
 
     Returns:
-        int: 1-indexed row number 
+        int: 1-indexed row number
     """
     for i, row in enumerate(reversed(board), 1):
         if 0 in row:
             return i
     raise NoEmptySpaceFoundException
+
 
 def get_inversion_count(board: List[List]) -> int:
     """Finds bubble sort inversions needed to give expected result
@@ -205,6 +214,7 @@ def get_inversion_count(board: List[List]) -> int:
                 inversion_count += 1
     return inversion_count
 
+
 def prepare_solved_board(dimension: int) -> PuzzleNode:
     """Prepares solved state to store it globally
 
@@ -217,6 +227,7 @@ def prepare_solved_board(dimension: int) -> PuzzleNode:
     solved = [[dimension * j + x + 1 for x in range(dimension)] for j in range(dimension)]
     solved[dimension - 1][dimension - 1] = 0
     return PuzzleNode(solved, dimension, '', 0)
+
 
 def check_if_valid_numbers(board: List[List], dimension: int) -> bool:
     """Performs a safe check if all numbers are in range <0, dimension ** 2 - 1>
@@ -234,6 +245,7 @@ def check_if_valid_numbers(board: List[List], dimension: int) -> bool:
                 return False
     return True
 
+
 def check_if_numbers_dont_repeat(board: List[List]) -> bool:
     """Performs a safe check if there is no duplicate in board
 
@@ -248,6 +260,7 @@ def check_if_numbers_dont_repeat(board: List[List]) -> bool:
         return False
     return True
 
+
 def two_d_to_one_d(board: List[List]) -> List:
     """Util function to quickly transpose 2d to 1d
 
@@ -258,6 +271,7 @@ def two_d_to_one_d(board: List[List]) -> List:
         List: board in 1d
     """
     return [x for row in board for x in row]
+
 
 def calculate_manhattan_distance(board: List[List], solved_board: List[List]) -> int:
     """Calculates manhattan distance between boards
@@ -272,10 +286,12 @@ def calculate_manhattan_distance(board: List[List], solved_board: List[List]) ->
     distance = 0
     numbers_in_1d = two_d_to_one_d(board)
     for number in numbers_in_1d:
-        unsolved_coords, solved_coords = find_coords_of_tile(board, number), find_coords_of_tile(solved_board, number)
+        unsolved_coords, solved_coords = \
+            find_coords_of_tile(board, number), find_coords_of_tile(solved_board, number)
         distance += abs(unsolved_coords[0] - solved_coords[0])
         distance += abs(unsolved_coords[1] - solved_coords[1])
     return distance
+
 
 def calculate_hamming_distance(board: List[List]) -> int:
     """Calculates hamming distance between boards
@@ -291,6 +307,7 @@ def calculate_hamming_distance(board: List[List]) -> int:
     for i, number in enumerate(numbers_in_1d, 1):
         distance += 1 if number != i or i == 16 and not number else 0
     return distance
+
 
 def evaluate_node_astar(node: PuzzleNode, heuristics: str, solved_board: PuzzleNode) -> int:
     """Evaluates node based on depth and chosen heuristic
@@ -309,6 +326,7 @@ def evaluate_node_astar(node: PuzzleNode, heuristics: str, solved_board: PuzzleN
         return node.depth + calculate_hamming_distance(node.board)
     return NotImplemented
 
+
 def evaluate_node_bf_strategy(node: PuzzleNode, heuristics: str, solved_board: PuzzleNode) -> int:
     """Evaluates node based on chosen heuristic
 
@@ -325,6 +343,7 @@ def evaluate_node_bf_strategy(node: PuzzleNode, heuristics: str, solved_board: P
     elif heuristics == 'mdlc':
         return calculate_hamming_distance(node.board)
     return NotImplemented
+
 
 @dataclass(order=True)
 class PrioritizedPuzzleNode:

@@ -4,7 +4,8 @@ class CustomException(Exception):
 
     def __str__(self) -> str:
         return self.base_message
-    
+
+
 class WrongGridSizeException(CustomException):
     def __init__(self, message='') -> None:
         self.message = 'Row and column count must be the same. '
@@ -12,6 +13,7 @@ class WrongGridSizeException(CustomException):
 
     def __str__(self) -> str:
         return super().__str__()
+
 
 class MissingGridSizeException(CustomException):
     def __init__(self, message='') -> None:
@@ -21,6 +23,7 @@ class MissingGridSizeException(CustomException):
     def __str__(self) -> str:
         return super().__str__()
 
+
 class WrongRowInputException(CustomException):
     def __init__(self, message='') -> None:
         self.message = 'Missing or wrong input in row. '
@@ -28,6 +31,7 @@ class WrongRowInputException(CustomException):
 
     def __str__(self) -> str:
         return super().__str__()
+
 
 class CannotMapToIntegerException(CustomException):
     def __init__(self, message='') -> None:
@@ -37,6 +41,7 @@ class CannotMapToIntegerException(CustomException):
     def __str__(self) -> str:
         return super().__str__()
 
+
 class NoEmptySpaceFoundException(CustomException):
     def __init__(self, message='') -> None:
         self.message = "Didn't find empty space in given numbers."
@@ -45,6 +50,7 @@ class NoEmptySpaceFoundException(CustomException):
     def __str__(self) -> str:
         return super().__str__()
 
+
 class NumbersOutOfRangeException(CustomException):
     def __init__(self, message='') -> None:
         self.message = "Numbers out of range. "
@@ -52,6 +58,7 @@ class NumbersOutOfRangeException(CustomException):
 
     def __str__(self) -> str:
         return super().__str__()
+
 
 class NumberRepetitionException(CustomException):
     def __init__(self, message='') -> None:

@@ -136,3 +136,4 @@ dmypy.json
 *.csv
 *.xlsx
 *.obj
+tox_venv

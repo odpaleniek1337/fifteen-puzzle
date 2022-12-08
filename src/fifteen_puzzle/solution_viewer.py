@@ -1,6 +1,10 @@
-from constants import *
-
 def show_result(board, solution) -> None:
+    """Prints starting board and steps to stdout
+
+    Args:
+        board (_type_): given board
+        solution (_type_): steps found to solve board
+    """
     print(f'Start board: \n{board}')
     for _, i in enumerate(solution):
         board = board._move(i)
