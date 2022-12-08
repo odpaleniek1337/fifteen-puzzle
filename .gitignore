@@ -132,8 +132,8 @@ dmypy.json
 *.15sav
 *.vscode
 *.zip
-*.txt
 *.csv
 *.xlsx
 *.obj
 tox_venv
+tests/prepared_boards/*
