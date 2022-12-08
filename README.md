@@ -1,6 +1,9 @@
 # fifteen-puzzle
-Repository containing development of fifteen-puzzle game and its solving algorithms
+Repository containing development of fifteen-puzzle solving techniques
 
 
-##
+
+## Requirements
 Developed using Python 3.8.10
+
+

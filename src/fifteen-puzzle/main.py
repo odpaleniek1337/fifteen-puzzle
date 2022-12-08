@@ -18,7 +18,7 @@ def main():
     algorithm, technique, algo_type = provide_algorithm_prerequisites(factory, args)
     if not algorithm:
         exit(f'You did not provide any algorithm')
-
+    
     if not algo_type:
         n, result = algorithm.solve(start_node, SOLVED_BOARD, list(technique))
     else:
