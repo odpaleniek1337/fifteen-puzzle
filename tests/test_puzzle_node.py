@@ -1,15 +1,25 @@
-from fifteen_puzzle.algo_utils import PuzzleNode
+from fifteen_puzzle.algo_utils import PuzzleNode, ExtendedPuzzleNode
 
 
-def test_if_two_3x3_puzzlenodes_with_same_board_are_equal(basic_invalid_3x3_state):
-    node1 = basic_invalid_3x3_state
-    node2 = basic_invalid_3x3_state
+def test_if_two_3x3_puzzlenodes_with_same_board_are_equal():
+    board = [
+        [1, 2, 3],
+        [4, 5, 6],
+        [7, 8, 9]
+    ]
+    node1 = PuzzleNode(board=board, dimension=3, steps='')
+    node2 = PuzzleNode(board=board, dimension=3, steps='')
     assert node1 == node2
 
 
-def test_if_two_3x3_puzzlenodes_have_the_same_hashes(basic_invalid_3x3_state):
-    hash1 = hash(basic_invalid_3x3_state)
-    hash2 = hash(basic_invalid_3x3_state)
+def test_if_two_3x3_puzzlenodes_have_the_same_hashes():
+    board = [
+        [1, 2, 3],
+        [4, 5, 6],
+        [7, 8, 9]
+    ]
+    hash1 = ExtendedPuzzleNode(board=board, dimension=3, steps='')
+    hash2 = ExtendedPuzzleNode(board=board, dimension=3, steps='')
     assert hash1 == hash2
 
 

@@ -3,8 +3,8 @@ from random import shuffle
 from collections import deque
 from queue import PriorityQueue
 from typing import List, Tuple
-from fifteen_puzzle.algo_utils import PuzzleNode, PrioritizedPuzzleNode, \
-    evaluate_node_astar, evaluate_node_bf_strategy
+from fifteen_puzzle.algo_utils import PuzzleNode, ExtendedPuzzleNode, \
+    PrioritizedPuzzleNode, evaluate_node_astar, evaluate_node_bf_strategy
 from fifteen_puzzle.constants import BASIC_ORDER
 
 
@@ -143,7 +143,7 @@ class BestFirstSearchAlgorithm(BaseAlgorithm):
         super().__init__()
         self.neighbours = PriorityQueue()
 
-    def solve(self, start_node: PuzzleNode, solved_node: PuzzleNode, heuristics: str) -> List[str]:
+    def solve(self, start_node: ExtendedPuzzleNode, solved_node: PuzzleNode, heuristics: str) -> List[str]:
         if start_node == solved_node:
             return 0, start_node.steps
         self.neighbours.put_nowait(PrioritizedPuzzleNode(0, start_node))
@@ -175,7 +175,7 @@ class AStarAlgorithm(BaseAlgorithm):
         super().__init__()
         self.neighbours = PriorityQueue()
 
-    def solve(self, start_node: PuzzleNode, solved_node: PuzzleNode, heuristics: str) -> List[str]:
+    def solve(self, start_node: ExtendedPuzzleNode, solved_node: PuzzleNode, heuristics: str) -> List[str]:
         if start_node == solved_node:
             return 0, start_node.steps
         self.neighbours.put_nowait(PrioritizedPuzzleNode(0, start_node))

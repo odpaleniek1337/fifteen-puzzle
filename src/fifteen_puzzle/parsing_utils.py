@@ -17,7 +17,7 @@ def parse_arguments() -> object:
         object: parsed arguments object
     """
     parser = ArgumentParser(
-        description='Script tires to solve fifteen-puzzle game using algorithm given by the user.'
+        description='Script tries to solve fifteen-puzzle game using algorithm given by the user.'
     )
 
     algorithms_choice = parser.add_mutually_exclusive_group()

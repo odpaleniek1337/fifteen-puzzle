@@ -3,16 +3,6 @@ from fifteen_puzzle.algo_utils import PuzzleNode
 
 
 @pytest.fixture(scope='session')
-def basic_invalid_3x3_state():
-    board = [
-        [1, 2, 3],
-        [4, 5, 6],
-        [7, 8, 9]
-    ]
-    yield PuzzleNode(board=board, dimension=3, steps='')
-
-
-@pytest.fixture(scope='session')
 def target_4x4_state():
     board = [
         [1, 2, 3, 4],

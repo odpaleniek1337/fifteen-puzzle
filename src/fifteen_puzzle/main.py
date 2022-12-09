@@ -1,5 +1,5 @@
 from fifteen_puzzle.parsing_utils import parse_arguments, load_from_file
-from fifteen_puzzle.algo_utils import check_if_solvable, prepare_solved_node
+from fifteen_puzzle.algo_utils import check_if_solvable, prepare_solved_node, ExtendedPuzzleNode
 from fifteen_puzzle.factory import AlgorithmFactory, provide_algorithm_prerequisites
 from fifteen_puzzle.solution_viewer import show_result
 
@@ -23,6 +23,7 @@ def main():
     if not algo_type:
         n, result = algorithm.solve(start_node, SOLVED_NODE, list(technique))
     else:
+        start_node = ExtendedPuzzleNode(start_node.board, start_node.dimension, start_node.steps)
         n, result = algorithm.solve(start_node, SOLVED_NODE, technique)
     print(f'{n}, {result}\n')
 

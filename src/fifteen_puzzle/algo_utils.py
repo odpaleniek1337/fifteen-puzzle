@@ -8,23 +8,16 @@ class PuzzleNode:
     """Base class representing state for saving and manipulating game
     """
     def __init__(self, board: List[List], dimension: int, steps: str,
-                 depth: int = 0, heuristic_value: int = 0) -> None:
+                 depth: int = 0) -> None:
         self.board = board
         self.dimension = dimension
         self.depth = depth
         self.steps = '' + steps
-        self.heuristic_value = heuristic_value
-
-    def __hash__(self) -> int:
-        return hash(bytes(two_d_to_one_d(self.board)))
 
     def __eq__(self, __o: object) -> bool:
         if not isinstance(__o, self.__class__):
             return NotImplemented
         return self.board == __o.board
-
-    def __lt__(self, __o: 'PuzzleNode') -> bool:
-        return self.heuristic_value < __o.heuristic_value
 
     def __str__(self) -> str:
         str_board = ''
@@ -76,7 +69,7 @@ class PuzzleNode:
             PuzzleNode: newly created 2d state after (0, -1) move
         """
         swapped_board = self._swap_0(position_0, MOVE_RIGHT)
-        return PuzzleNode(swapped_board, self.dimension, self.steps + 'R', self.depth + 1)
+        return self.__class__(swapped_board, self.dimension, self.steps + 'R', self.depth + 1)
 
     def _down(self, position_0: tuple) -> 'PuzzleNode':
         """Creates new state after move down
@@ -88,7 +81,7 @@ class PuzzleNode:
             PuzzleNode: newly created 2d state after (-1, 0) move
         """
         swapped_board = self._swap_0(position_0, MOVE_DOWN)
-        return PuzzleNode(swapped_board, self.dimension, self.steps + 'D', self.depth + 1)
+        return self.__class__(swapped_board, self.dimension, self.steps + 'D', self.depth + 1)
 
     def _left(self, position_0: tuple) -> 'PuzzleNode':
         """Creates new state after move to the left
@@ -100,7 +93,7 @@ class PuzzleNode:
             PuzzleNode: newly created 2d state after (0, 1) move
         """
         swapped_board = self._swap_0(position_0, MOVE_LEFT)
-        return PuzzleNode(swapped_board, self.dimension, self.steps + 'L', self.depth + 1)
+        return self.__class__(swapped_board, self.dimension, self.steps + 'L', self.depth + 1)
 
     def _up(self, position_0: tuple) -> 'PuzzleNode':
         """Creates new state after move up
@@ -112,7 +105,7 @@ class PuzzleNode:
             PuzzleNode: newly created 2d state after (1, 0) move
         """
         swapped_board = self._swap_0(position_0, MOVE_UP)
-        return PuzzleNode(swapped_board, self.dimension, self.steps + 'U', self.depth + 1)
+        return self.__class__(swapped_board, self.dimension, self.steps + 'U', self.depth + 1)
 
     def move(self, direction: str) -> Union['PuzzleNode', None]:
         """Creates new state after move given direction (R,D,L,U)
@@ -130,6 +123,19 @@ class PuzzleNode:
         elif direction == 'U' and self._check_if_move_possible(position, MOVE_UP):
             return self._up(position)
         return None
+
+
+class ExtendedPuzzleNode(PuzzleNode):
+    def __init__(self, board: List[List], dimension: int, steps: str,
+                 depth: int = 0, heuristic_value: int = 0) -> None:
+        super().__init__(board, dimension, steps, depth)
+        self.heuristic_value = heuristic_value
+
+    def __hash__(self) -> int:
+        return hash(bytes(two_d_to_one_d(self.board)))
+
+    def __lt__(self, __o: 'ExtendedPuzzleNode') -> bool:
+        return self.heuristic_value < __o.heuristic_value
 
 
 def find_coords_of_tile(board: List[List], tile: int) -> Tuple[int, int]:
@@ -309,13 +315,14 @@ def calculate_hamming_distance(board: List[List]) -> int:
     return distance
 
 
-def evaluate_node_astar(node: PuzzleNode, heuristics: str, solved_state: PuzzleNode) -> int:
+def evaluate_node_astar(node: ExtendedPuzzleNode, heuristics: str,
+                        solved_state: ExtendedPuzzleNode) -> int:
     """Evaluates node based on depth and chosen heuristic
 
     Args:
-        node (PuzzleNode): given state
+        node (ExtendedPuzzleNode): given state
         heuristics (str): heuristic type (manh, hamm)
-        solved_state (PuzzleNode): target state
+        solved_state (ExtendedPuzzleNode): target state
 
     Returns:
         int: astar evaluation
@@ -327,13 +334,14 @@ def evaluate_node_astar(node: PuzzleNode, heuristics: str, solved_state: PuzzleN
     return NotImplemented
 
 
-def evaluate_node_bf_strategy(node: PuzzleNode, heuristics: str, solved_state: PuzzleNode) -> int:
+def evaluate_node_bf_strategy(node: ExtendedPuzzleNode, heuristics: str,
+                              solved_state: ExtendedPuzzleNode) -> int:
     """Evaluates node based on chosen heuristic
 
     Args:
-        node (PuzzleNode): given state
+        node (ExtendedPuzzleNode): given state
         heuristics (str): heuristic type (manh, hamm)
-        solved_state (PuzzleNode): target state
+        solved_state (ExtendedPuzzleNode): target state
 
     Returns:
         int: greedy-best-first-strategy evaluation
@@ -350,4 +358,4 @@ class PrioritizedPuzzleNode:
     """Class wrapping representing state and priority - the lower the better
     """
     priority: int
-    item: PuzzleNode = field(compare=False)
+    item: ExtendedPuzzleNode = field(compare=False)
