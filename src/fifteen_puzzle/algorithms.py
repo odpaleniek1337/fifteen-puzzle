@@ -114,7 +114,7 @@ class IterativeDeepeningDepthFirstSearchAlgorithm(BaseAlgorithm):
             while self.neighbours:
                 current_node = self.neighbours.pop()
                 if current_node == solved_node:
-                    return len(new_node.steps), new_node.steps
+                    return len(current_node.steps), current_node.steps
                 if current_node.depth < self.current_depth:
                     if shuffle_flag:
                         shuffle(order)
@@ -152,7 +152,7 @@ class BestFirstSearchAlgorithm(BaseAlgorithm):
         while self.neighbours:
             current_node = self.neighbours.get_nowait().item
             if current_node == solved_node:
-                return len(new_node.steps), new_node.steps
+                return len(current_node.steps), current_node.steps
             for direction in BASIC_ORDER:
                 new_node = current_node.move(direction=direction)
                 if new_node and hash(new_node) not in self.seen_nodes:
@@ -184,7 +184,7 @@ class AStarAlgorithm(BaseAlgorithm):
         while self.neighbours:
             current_node = self.neighbours.get_nowait().item
             if current_node == solved_node:
-                return len(new_node.steps), new_node.steps
+                return len(current_node.steps), current_node.steps
             for direction in BASIC_ORDER:
                 new_node = current_node.move(direction=direction)
                 if new_node and hash(new_node) not in self.seen_nodes:

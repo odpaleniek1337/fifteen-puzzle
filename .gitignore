@@ -137,3 +137,5 @@ dmypy.json
 *.obj
 tox_venv
 tests/prepared_boards/*
+*.pkl
+*.ipynb

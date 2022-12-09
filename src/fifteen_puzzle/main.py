@@ -2,7 +2,6 @@ from fifteen_puzzle.parsing_utils import parse_arguments, load_from_file
 from fifteen_puzzle.algo_utils import check_if_solvable, prepare_solved_node
 from fifteen_puzzle.factory import AlgorithmFactory, provide_algorithm_prerequisites
 from fifteen_puzzle.solution_viewer import show_result
-import time
 
 
 def main():
@@ -20,13 +19,12 @@ def main():
     algorithm, technique, algo_type = provide_algorithm_prerequisites(factory, args)
     if not algorithm:
         exit('You did not provide any algorithm')
-    start_time = time.time()
 
     if not algo_type:
         n, result = algorithm.solve(start_node, SOLVED_NODE, list(technique))
     else:
         n, result = algorithm.solve(start_node, SOLVED_NODE, technique)
-    print(f'{n}, {result}, {time.time() - start_time}')
+    print(f'{n}, {result}\n')
 
     if args.display:
         show_result(start_node, result)

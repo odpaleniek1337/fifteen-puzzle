@@ -103,6 +103,7 @@ def serialize_objects(filename: str, objects: object) -> None:
     with open(filename, 'wb') as output_file:
         pickle.dump(objects, output_file)
 
+
 def deserialize_objects(filename: str) -> object:
     """Pickle deserialization function
 
