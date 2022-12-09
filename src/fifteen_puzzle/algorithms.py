@@ -44,21 +44,20 @@ class BreadthFirstSearchAlgorithm(BaseAlgorithm):
             return 0, start_node.steps
 
         self.neighbours.append(start_node)
-        self.seen_nodes.add(hash(start_node))
         shuffle_flag = order[0] == 'R'
         while self.neighbours:
             current_node = self.neighbours.popleft()
-            if current_node.depth >= self.max_depth:
-                return -1, ''
-            if shuffle_flag:
-                shuffle(order)
-            for direction in order:
-                new_node = current_node.move(direction=direction)
-                if new_node and new_node == solved_node:
-                    return len(new_node.steps), new_node.steps
-                if new_node and hash(new_node) not in self.seen_nodes:
-                    self.neighbours.append(new_node)
-                    self.seen_nodes.add(hash(new_node))
+            if current_node == solved_node:
+                return len(current_node.steps), current_node.steps
+            if current_node.depth < self.max_depth:
+                if shuffle_flag:
+                    shuffle(order)
+                for direction in order:
+                    new_node = current_node.move(direction=direction)
+                    if new_node:
+                        self.neighbours.append(new_node)
+        if not self.neighbours:
+            return -1, ''
 
 
 class DepthFirstSearchAlgorithm(BaseAlgorithm):
@@ -75,20 +74,22 @@ class DepthFirstSearchAlgorithm(BaseAlgorithm):
             return 0, start_node.steps
 
         self.neighbours.append(start_node)
-        self.seen_nodes.add(hash(start_node))
         shuffle_flag = order[0] == 'R'
         while self.neighbours:
             current_node = self.neighbours.pop()
             if current_node == solved_node:
                 return len(current_node.steps), current_node.steps
-            if shuffle_flag:
-                shuffle(order)
-            for direction in order:
-                new_node = current_node.move(direction=direction)
-                if new_node and hash(new_node) not in self.seen_nodes and new_node.depth <= self.max_depth:
-                    self.neighbours.append(new_node)
-                    self.seen_nodes.add(hash(new_node))
-
+            if current_node.depth < self.max_depth:
+                if shuffle_flag:
+                    shuffle(order)
+                new_nodes = []
+                for direction in order:
+                    new_node = current_node.move(direction=direction)
+                    if new_node:
+                        new_nodes.append(new_node)
+                if new_nodes:
+                    self.neighbours.extend(reversed(new_nodes))
+                    new_nodes = []
         if not self.neighbours:
             return -1, ''
 
@@ -108,29 +109,26 @@ class IterativeDeepeningDepthFirstSearchAlgorithm(BaseAlgorithm):
             return 0, start_node.steps
 
         self.neighbours.append(start_node)
-        self.seen_nodes.add(hash(start_node))
         shuffle_flag = order[0] == 'R'
         while True:
-            lowest_depth_neighbours = deque()
             while self.neighbours:
                 current_node = self.neighbours.pop()
-                if shuffle_flag:
-                    shuffle(order)
+                if current_node == solved_node:
+                    return len(new_node.steps), new_node.steps
                 if current_node.depth < self.current_depth:
+                    if shuffle_flag:
+                        shuffle(order)
+                    new_nodes = []
                     for direction in order:
                         new_node = current_node.move(direction=direction)
-                        if new_node and new_node == solved_node:
-                            return len(new_node.steps), new_node.steps
-                        if new_node and hash(new_node) not in self.seen_nodes:
-                            self.seen_nodes.add(hash(new_node))
-                            if current_node.depth == self.current_depth - 1:
-                                lowest_depth_neighbours.append(new_node)
-                            else:
-                                self.neighbours.append(new_node)
+                        new_nodes.append(new_node) if new_node else None
+                    if new_nodes:
+                        self.neighbours.extend(reversed(new_nodes))
+                        new_nodes = []
 
-            if not self.neighbours and self.current_depth < self.max_depth:
+            if self.current_depth < self.max_depth:
                 self.current_depth += 1
-                self.neighbours, lowest_depth_neighbours = lowest_depth_neighbours, deque()
+                self.neighbours.append(start_node)
             else:
                 return -1, ''
 
@@ -153,10 +151,10 @@ class BestFirstSearchAlgorithm(BaseAlgorithm):
 
         while self.neighbours:
             current_node = self.neighbours.get_nowait().item
+            if current_node == solved_node:
+                return len(new_node.steps), new_node.steps
             for direction in BASIC_ORDER:
                 new_node = current_node.move(direction=direction)
-                if new_node and new_node == solved_node:
-                    return len(new_node.steps), new_node.steps
                 if new_node and hash(new_node) not in self.seen_nodes:
                     self.neighbours.put_nowait(
                         PrioritizedPuzzleNode(
@@ -185,10 +183,10 @@ class AStarAlgorithm(BaseAlgorithm):
 
         while self.neighbours:
             current_node = self.neighbours.get_nowait().item
+            if current_node == solved_node:
+                return len(new_node.steps), new_node.steps
             for direction in BASIC_ORDER:
                 new_node = current_node.move(direction=direction)
-                if new_node and new_node == solved_node:
-                    return len(new_node.steps), new_node.steps
                 if new_node and hash(new_node) not in self.seen_nodes:
                     self.neighbours.put_nowait(
                         PrioritizedPuzzleNode(
