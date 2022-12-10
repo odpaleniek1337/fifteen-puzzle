@@ -1,4 +1,4 @@
-from fifteen_puzzle.parsing_utils import parse_arguments, load_from_file, load_from_input
+from fifteen_puzzle.parsing_utils import parse_arguments, load_from_file, load_from_input, output_to_file
 from fifteen_puzzle.algo_utils import check_if_solvable, prepare_solved_node, ExtendedPuzzleNode
 from fifteen_puzzle.factory import AlgorithmFactory, provide_algorithm_prerequisites
 from fifteen_puzzle.solution_viewer import pass_solution_step_by_step_to_stdout
@@ -6,7 +6,6 @@ from fifteen_puzzle.solution_viewer import pass_solution_step_by_step_to_stdout
 
 def main():
     args = parse_arguments()
-    print(args)
     if args.input_file:
         start_node, grid_dimension = load_from_file(filename=args.input_file)
     else:
@@ -31,9 +30,9 @@ def main():
         n, result = algorithm.solve(start_node, SOLVED_NODE, technique)
 
     if args.output_file:
-        raise NotImplementedError
+        output_to_file(args.output_file, n, result)
     else:
-        print(f'{n}, {result}\n')
+        print(f'{n}, {result}')
 
     if args.display:
         pass_solution_step_by_step_to_stdout(start_node, result)

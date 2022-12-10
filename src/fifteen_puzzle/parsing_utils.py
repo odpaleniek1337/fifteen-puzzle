@@ -2,9 +2,9 @@ import pickle
 from fifteen_puzzle.constants import *  # noqa: F403
 from io import TextIOWrapper
 from argparse import ArgumentParser
-from typing import Union, Tuple, List
+from typing import Tuple, List
 from fifteen_puzzle.algo_utils import PuzzleNode, check_if_valid_numbers, check_if_numbers_dont_repeat
-from fifteen_puzzle.exceptions import CustomException, WrongGridSizeException, \
+from fifteen_puzzle.exceptions import WrongGridSizeException, \
     MissingGridSizeException, WrongRowInputException, CannotMapToIntegerException, \
     NumbersOutOfRangeException, NumberRepetitionException
 
@@ -60,6 +60,7 @@ def load_from_input() -> Tuple[PuzzleNode, int]:
         Tuple[PuzzleNode, int]: (Starting state, dimension)
     """
     grid, grid_dimension = read_input()
+
     return transform_board_to_state(grid, grid_dimension), grid_dimension
 
 
@@ -75,6 +76,7 @@ def transform_board_to_state(board: List[List], dimension: int) -> PuzzleNode:
     """
     check_numbers_validity(grid=board, grid_dimension=dimension)
     root_puzzle = PuzzleNode(board=board, dimension=dimension, steps='')
+
     return root_puzzle
 
 
@@ -96,7 +98,7 @@ def check_numbers_validity(grid: List[List], grid_dimension: int) -> None:
         raise NumberRepetitionException
 
 
-def read_input(chosen_input: object = input) -> Tuple[Union[PuzzleNode, CustomException], int]:
+def read_input(chosen_input: object = input) -> Tuple[PuzzleNode, int]:
     """Reads input from given source
 
     Args:
@@ -143,7 +145,20 @@ def read_input(chosen_input: object = input) -> Tuple[Union[PuzzleNode, CustomEx
             msg = f'Wrong row size - expected: {grid_size[1]} given: {len(line)}. Row: {x + 1}'
             raise WrongRowInputException(msg)
         grid.append(line)
+
     return grid, grid_size[0]
+
+
+def output_to_file(filename: str, solution_length: int, steps: str) -> None:
+    """Outputs data to given file
+
+    Args:
+        filename (str): filename
+        solution_length (int): length of found solution
+        steps (str): steps in found solution
+    """
+    with open(filename, 'w', newline='') as output_file:
+        output_file.write(f'{solution_length}, {steps}\n')
 
 
 def serialize_objects(filename: str, objects: object) -> None:
@@ -168,4 +183,5 @@ def deserialize_objects(filename: str) -> object:
     """
     with open(filename, 'rb') as input_file:
         inputs = pickle.load(input_file)
+
     return inputs

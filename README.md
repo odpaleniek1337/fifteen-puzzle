@@ -24,13 +24,17 @@ Usage
 > 
 > [-o/--output_file <OUTPUT_FILE>]
 
-Example invoke
+Example invokes - file paths depending on os
     
 `python .\src\fifteen_puzzle\main.py -n input1.sav --bfs DRUL --display`
+
+`python src\fifteen_puzzle\main.py < tests\prepared_boards\input8.15sav > output.15sav --dfs LRUD`
 
 Example output
 
 `10, LDRUDURDLU`
+
+`5, URUUL`
 
 To run tests
 
