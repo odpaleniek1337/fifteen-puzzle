@@ -2,7 +2,7 @@ import pickle
 from fifteen_puzzle.constants import *  # noqa: F403
 from io import TextIOWrapper
 from argparse import ArgumentParser
-from typing import Union, Tuple
+from typing import Union, Tuple, List
 from fifteen_puzzle.algo_utils import PuzzleNode, check_if_valid_numbers, check_if_numbers_dont_repeat
 from fifteen_puzzle.exceptions import CustomException, WrongGridSizeException, \
     MissingGridSizeException, WrongRowInputException, CannotMapToIntegerException, \
@@ -38,52 +38,59 @@ def parse_arguments() -> object:
     return parser.parse_args()
 
 
-def load_from_file(filename: str) -> Tuple[Union[PuzzleNode, CustomException], int]:
+def load_from_file(filename: str) -> Tuple[PuzzleNode, int]:
     """Loads grid from provided file
 
     Args:
         filename (str): filename
 
     Returns:
-        Tuple[Union[PuzzleNode, CustomException], int]: (Starting state, dimension)
+        Tuple[PuzzleNode, int]: (Starting state, dimension)
     """
     with open(filename, 'r') as input_file:
-        grid, grid_size = read_input(input_file)
+        grid, grid_dimension = read_input(input_file)
 
-    check_numbers_validity(grid=grid, grid_size=grid_size)
-
-    root_puzzle = PuzzleNode(board=grid, dimension=grid_size[0], steps='')
-
-    return root_puzzle, grid_size[0]
+    return transform_board_to_state(grid, grid_dimension), grid_dimension
 
 
-def load_from_input() -> Tuple[Union[PuzzleNode, CustomException], int]:
+def load_from_input() -> Tuple[PuzzleNode, int]:
     """Loads grid from stdin
 
     Returns:
-        Tuple[Union[PuzzleNode, CustomException], int]: (Starting state, dimension)
+        Tuple[PuzzleNode, int]: (Starting state, dimension)
     """
-    grid, grid_size = read_input()
-
-    check_numbers_validity(grid=grid, grid_size=grid_size)
-
-    root_puzzle = PuzzleNode(board=grid, dimension=grid_size[0], steps='')
-    return root_puzzle, grid_size[0]
+    grid, grid_dimension = read_input()
+    return transform_board_to_state(grid, grid_dimension), grid_dimension
 
 
-def check_numbers_validity(grid, grid_size) -> None:
+def transform_board_to_state(board: List[List], dimension: int) -> PuzzleNode:
+    """Transforms board to state
+
+    Args:
+        board (List[List]): starting board
+        dimension (int): given dimension
+
+    Returns:
+        PuzzleNode: Starting state of the game
+    """
+    check_numbers_validity(grid=board, grid_dimension=dimension)
+    root_puzzle = PuzzleNode(board=board, dimension=dimension, steps='')
+    return root_puzzle
+
+
+def check_numbers_validity(grid: List[List], grid_dimension: int) -> None:
     """Checks for basic validity of data
 
     Args:
-        grid (_type_): board of the game
-        grid_size (_type_): dimension of the game
+        grid (List[List]): board of the game
+        grid_dimension (int): dimension of the game
 
     Raises:
         NumbersOutOfRangeException: Numbers are out of range
         NumberRepetitionException: One of the number is repeated
     """
-    if not check_if_valid_numbers(board=grid, dimension=grid_size[0]):
-        msg = f'Range: <0, {grid_size[0] ** 2 - 1}>'
+    if not check_if_valid_numbers(board=grid, dimension=grid_dimension):
+        msg = f'Range: <0, {grid_dimension ** 2 - 1}>'
         raise NumbersOutOfRangeException(msg)
     if not check_if_numbers_dont_repeat(board=grid):
         raise NumberRepetitionException
@@ -102,7 +109,8 @@ def read_input(chosen_input: object = input) -> Tuple[Union[PuzzleNode, CustomEx
         WrongRowInputException: Number of tiles differes from declared in certain row
 
     Returns:
-        Tuple[Union[PuzzleNode, CustomException], int]: Either raises exception or creates starting state and dimension.
+        Tuple[Union[PuzzleNode, CustomException], int]:
+        Either raises exception or creates starting state and dimension.
     """
     grid = []
     try:
@@ -135,7 +143,7 @@ def read_input(chosen_input: object = input) -> Tuple[Union[PuzzleNode, CustomEx
             msg = f'Wrong row size - expected: {grid_size[1]} given: {len(line)}. Row: {x + 1}'
             raise WrongRowInputException(msg)
         grid.append(line)
-    return grid, grid_size
+    return grid, grid_size[0]
 
 
 def serialize_objects(filename: str, objects: object) -> None:
