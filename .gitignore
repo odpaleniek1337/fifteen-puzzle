@@ -129,13 +129,12 @@ dmypy.json
 .pyre/
 
 # special project files
-*.15sav
 *.vscode
 *.zip
 *.csv
 *.xlsx
 *.obj
 tox_venv
-tests/prepared_boards/*
+tests/prepared_boards/*/
 *.pkl
 *.ipynb

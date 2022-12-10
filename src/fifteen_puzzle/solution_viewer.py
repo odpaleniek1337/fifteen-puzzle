@@ -1,4 +1,4 @@
-def show_result(board, solution) -> None:
+def pass_solution_step_by_step_to_stdout(board, solution) -> None:
     """Prints starting board and steps to stdout
 
     Args:
